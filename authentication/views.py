@@ -77,6 +77,7 @@ def login(request):
                     # Redirect to a success page.
                     request.session['username'] = username
                     request.session['user_id'] = user.id
+                    request.session['domisili'] = user.domisili
                     
                     return JsonResponse({
                     "status": True,
@@ -123,5 +124,9 @@ def logout(request):
 			auth_logout(request)
 		return JsonResponse({"status" : "logged out"}, status=200)
 	return JsonResponse({"status": "Not yet authenticated"}, status =403)
+
+
+# def get_user(request):
+#     return RegisteredUser.objects.filter(user.username = request.user.username)
 
 

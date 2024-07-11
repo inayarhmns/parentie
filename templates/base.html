@@ -14,23 +14,25 @@
             "pr-black":'#172048',
             "pr-blue":'#A1E1FF',
             "pr-pink":'#DC9AC3',
-            'pr-grey':'#56628A'
+            'pr-grey':'#56628A',
+            'pr-light-blue': '#F4FEFF'
           },
           backgroundImage: {
             'blue-pink': 'linear-gradient(90.29deg, #A1E1FF 0.21%, #DC98C1 99.79%)',
             'blue-gradient':'linear-gradient(97.65deg, #70B2FF 0.33%, #A1E1FF 93.35%);',
-          },textColor: {
-        'blue-pink': 'transparent',
-      },
+          },
+          textColor: {
+            'blue-pink': 'transparent',
+          },
         }
       }
     }
   </script>
 </head>
-<body class="bg-gray-100">
-  <nav class="bg-white shadow-md">
+<body class="bg-pr-light-blue">
+  <nav class="bg-pr-light-blue shadow-md w-full z-100 fixed">
     <div class="container mx-auto px-4 py-2 flex justify-between items-center">
-      <img src="{% static 'static/img/parentie.svg' %}" alt="Logo">
+      <img src="{% static 'img/parentie.svg' %}" alt="Logo" width="132" height="26">
       <button class="block lg:hidden px-2 py-1 text-gray-700 focus:outline-none" id="navbar-toggler">
         <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
           <path fill-rule="evenodd" d="M4 5h16M4 12h16M4 19h16"/>
@@ -39,10 +41,10 @@
       <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="navbar-menu">
         <ul class="lg:flex items-center justify-between text-base text-gray-700 pt-4 lg:pt-0">
           <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/">Home</a></li>
-          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/services/">Services</a></li>
+          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/donor/">Services</a></li>
           <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/chat/">Chat</a></li>
           <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/profile/">Profile</a></li>
-          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/auth/login/">Login</a></li>
+          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/auth/login">Login</a></li>
         </ul>
       </div>
     </div>
@@ -51,7 +53,7 @@
   {% block content %}
   {% endblock content %}
 
-  <footer class="bg-gray-800 text-white text-center p-4">
+  <footer class="bg-pr-light-blue text-black text-center p-4">
     <p>&copy; parentie</p>
   </footer>
 

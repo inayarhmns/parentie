@@ -1,5 +1,5 @@
 from django.urls import path
-from donor.views import get_all_donors, filter_donors
+from donor.views import get_all_donors
 
 app_name = 'donor'
 
