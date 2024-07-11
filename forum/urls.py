@@ -1,5 +1,5 @@
 from django.urls import path
-from forum.views import events, get_detail_event, delete_detail_event, update_detail_event, create_detail_event, event
+from forum.views import events, get_detail_event, delete_detail_event, update_detail_event, create_detail_event, event, add_discussion, get_all_discussion
 
 app_name = 'forum'
 
@@ -9,20 +9,7 @@ urlpatterns = [
     path('event-delete/<int:id>/', delete_detail_event, name='delete_detail_event'),
     path('event-update/<int:id>/', update_detail_event, name='update_detail_event'),
     path('event-create/<int:id>/', create_detail_event, name='create_detail_event'),
-    path('event/<int:id>/', event, name='event')
-
-
-
-
-
-    
-]
-from django.urls import path
-from forum.views import add_discussion, get_all_discussion
-
-app_name = 'forum'
-
-urlpatterns = [
+    path('event/<int:id>/', event, name='event'),
     path('add_discussion', add_discussion, name='add_discussion'),
     path('get_all_discussion', get_all_discussion, name='get_all_discussion'),
     

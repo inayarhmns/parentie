@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from forum.models import Event
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.views.decorators.csrf import csrf_exempt
 
-from forum.models import Discussion, Comment
+from forum.models import Discussion, Comment, PesertaEvent
 
 def get_all_discussion(request):
     discussion = Discussion.objects.all()
@@ -192,22 +192,29 @@ def add_discussion(request):
 #     return render(request,'detail_post.html',context)
 
 
-   def event(request, id):
+def event(request, id):
+    id_logged_in = request.session.get('user_id')
+    print(id_logged_in)
     context = get_detail_event(id)
+    if id_logged_in:
+        context["id_logged_in"] = id_logged_in
+    else:
+        context["id_logged_in"] = ""
     return render(request, 'detail_event.html', context)
 
 
 def events(request):
     if(request.method == 'GET'):
         data = Event.objects.all()
-        print(data)
         return JsonResponse({"error": "user Dibuat"}, status=200)
 
     
 def get_detail_event(id):
-    data = Event.objects.filter(id=id)
-    data_serialized = list(data.values())
-    return data_serialized[0]
+    event = Event.objects.filter(id=id).values().first()
+    if event:
+        peserta_events = PesertaEvent.objects.filter(event_id=id).values('peserta')
+        event['peserta_events'] = list(peserta_events)
+    return event
 
     
 @csrf_exempt
@@ -274,15 +281,12 @@ def update_detail_event(request, id):
 @csrf_exempt
 def delete_detail_event(request, id):
     try:
-        if(request.method == "DELETE"):
-            data = Event.objects.filter(id=id)
-            print(data)
-            data.delete()
-            return JsonResponse({"success": "success deleeting data"}, status=200)
-    except:
-        return JsonResponse({"error": "error deleting data"}, status=500)
+        data = Event.objects.filter(id=id)
+        data.delete()
+        return JsonResponse({"success": "Event deleted successfully"}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500) 
 
-
-    
+    # return redirect('forum:event/4')
 
     
