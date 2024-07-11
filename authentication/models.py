@@ -7,10 +7,10 @@ class RegisteredUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     peran = models.CharField()
     nama = models.CharField()
-    umur = models.IntegerField()
+    umur = models.IntegerField(default=None, null=True, blank=True)
     domisili = models.CharField()
-    golongan_darah = models.CharField()
-    status_ibu = models.CharField(default=None, null=True, blank=True)
+    golongan_darah = models.CharField(default=None, null=True, blank=True)
+    kondisi_ibu = models.CharField(default=None, null=True, blank=True)
 
 class Bayi(models.Model):
     umur = models.IntegerField()
