@@ -52,3 +52,59 @@ def register(request):
             return JsonResponse({"error": str(e)}, status=400)
     
     return render(request, "register.html")
+
+
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+
+
+@csrf_exempt
+def login(request):
+    if (request.method == "POST"):
+        try:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    auth_login(request, user)
+                    # Redirect to a success page.
+                    return JsonResponse({
+                    "status": True,
+                    "message": "Successfully Logged In!"
+                    }, status=200)
+                else:
+                    return JsonResponse({
+                    "status": False,
+                    "message": "Failed to Login, Account Disabled."
+                    }, status=401)
+
+            else:
+                return JsonResponse({
+                "status": False,
+                "message": "Failed to Login, check your email/password."
+                }, status=401)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+     
+    return render(request, 'login.html')
+
+    
+
+
+
+@csrf_exempt
+def logout(request):
+	if request.user.is_authenticated or ['loggedIn']:
+		if request.user.is_authenticated:
+			auth_logout(request)
+		return JsonResponse({"status" : "logged out"}, status=200)
+	return JsonResponse({"status": "Not yet authenticated"}, status =403)
+
+
