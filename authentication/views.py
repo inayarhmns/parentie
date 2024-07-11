@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 from authentication.models import RegisteredUser
 
 
@@ -22,13 +23,14 @@ def register(request):
             umur_bayi = request.POST.get("umur_bayi")
             jenis_kelamin = request.POST.get("jenis_kelamin")
 
-            pengguna_baru = RegisteredUser.objects.create_user(username=username, password=password, nama = nama, peran = peran, domisili = domisili, agama = agama, umur = umur, golongan_darah = golongan_darah, kondisi_ibu = kondisi_ibu, umur_bayi = umur_bayi, jenis_kelamin_bayi = jenis_kelamin)
+            user = User.objects.create_user(username=username, password=password)
+            pengguna_baru = RegisteredUser.objects.create(user=user, nama = nama, peran = peran, domisili = domisili, agama = agama, umur = umur, golongan_darah = golongan_darah, kondisi_ibu = kondisi_ibu, umur_bayi = umur_bayi, jenis_kelamin_bayi = jenis_kelamin)
             
             pengguna_baru.save()
             return JsonResponse({"instance": "user Dibuat"}, status=200)
         
-        except:
-            return JsonResponse({"instance": "gagal Dibuat"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
      
     return JsonResponse({"instance": "gagal Dibuat"}, status=400)
 
@@ -45,29 +47,36 @@ from django.http import HttpResponse
 
 @csrf_exempt
 def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            auth_login(request, user)
-            # Redirect to a success page.
-            return JsonResponse({
-            "status": True,
-            "message": "Successfully Logged In!"
-            }, status=200)
-        else:
-            return JsonResponse({
-            "status": False,
-            "message": "Failed to Login, Account Disabled."
-            }, status=401)
+    if (request.method == "POST"):
+        try:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    auth_login(request, user)
+                    # Redirect to a success page.
+                    return JsonResponse({
+                    "status": True,
+                    "message": "Successfully Logged In!"
+                    }, status=200)
+                else:
+                    return JsonResponse({
+                    "status": False,
+                    "message": "Failed to Login, Account Disabled."
+                    }, status=401)
 
-    else:
-        return JsonResponse({
-        "status": False,
-        "message": "Failed to Login, check your email/password."
-        }, status=401)
+            else:
+                return JsonResponse({
+                "status": False,
+                "message": "Failed to Login, check your email/password."
+                }, status=401)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+     
+    return render(request, 'login.html')
 
+    
 
 
 

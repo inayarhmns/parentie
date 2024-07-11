@@ -9,6 +9,7 @@ class RegisteredUser(models.Model):
     nama = models.CharField()
     umur = models.IntegerField(default=None, null=True, blank=True)
     domisili = models.CharField()
+    agama = models.CharField(default=None, null=True, blank=True)
     golongan_darah = models.CharField(default=None, null=True, blank=True)
     kondisi_ibu = models.CharField(default=None, null=True, blank=True)
     umur_bayi = models.IntegerField(default=None, null=True, blank=True)
