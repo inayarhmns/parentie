@@ -7,3 +7,15 @@ ENV/
 env.bak/ 
 venv.bak/ 
 .vercel
+
+*.pyc
+__pycache__/
+.vscode/
+*.sqlite3
+.env
+env.template
+.DS_Store
+media/
+static/
+venv/
+
