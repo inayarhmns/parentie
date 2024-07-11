@@ -75,9 +75,13 @@ def login(request):
                 if user.is_active:
                     auth_login(request, user)
                     # Redirect to a success page.
+                    request.session['username'] = username
+                    request.session['user_id'] = user.id
+                    
                     return JsonResponse({
                     "status": True,
-                    "message": "Successfully Logged In!"
+                    "message": "Successfully Logged In!",
+                    "session": get_session(request),
                     }, status=200)
                 else:
                     return JsonResponse({
@@ -96,6 +100,19 @@ def login(request):
     return render(request, 'login.html')
 
     
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def get_session(request):
+    # Access the session data
+    username = request.session.get('username')
+    user_id = request.session.get('user_id')
+
+    if username and user_id:
+        return username
+    else:
+        return "no session data found!"
 
 
 
