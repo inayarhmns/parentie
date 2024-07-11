@@ -11,8 +11,5 @@ class RegisteredUser(models.Model):
     domisili = models.CharField()
     golongan_darah = models.CharField(default=None, null=True, blank=True)
     kondisi_ibu = models.CharField(default=None, null=True, blank=True)
-
-class Bayi(models.Model):
-    umur = models.IntegerField()
-    jenis_kelamin = models.CharField()
-    orang_tua = models.OneToOneField(RegisteredUser, on_delete=models.CASCADE)
+    umur_bayi = models.IntegerField(default=None, null=True, blank=True)
+    jenis_kelamin_bayi = models.CharField(default=None, null=True, blank=True)
