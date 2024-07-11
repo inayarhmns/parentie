@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Donor</title>
+    
+{% endblock meta %}
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-4">List of Donors</h1>
+    
+    <!-- Dropdown Filter -->
+    <form action="" method="get" class="mb-4">
+        <label for="tag" class="block text-sm font-medium text-gray-700">Filter by Tag:</label>
+        <div class="mt-1 relative">
+            <select id="tag" name="tag" class="block appearance-none w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="">All</option>
+                <!-- Add options based on available tags -->
+                <option value="tag1">Tag 1</option>
+                <option value="tag2">Tag 2</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <button type="submit" class="mt-2 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Apply Filter
+        </button>
+    </form>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Loop through donors -->
+        {% for donor in donors %}
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">{{ donor.user.username }}</h2>
+                <p class="text-sm text-gray-600">{{ donor.timestamp }}</p>
+                <p class="text-sm text-gray-600">{{ donor.tag }}</p>
+                <!-- Add more details or buttons as needed -->
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
