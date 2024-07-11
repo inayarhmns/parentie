@@ -32,5 +32,4 @@ def register(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
      
-    return JsonResponse({"instance": "not Dibuat"}, status=400)
-
+    return render(request, "register.html")
