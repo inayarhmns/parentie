@@ -1,6 +1,6 @@
 import datetime
 from django.shortcuts import get_object_or_404, render, redirect
-from forum.models import Event
+from forum_v2.models import Event
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -22,35 +22,86 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 
 from authentication.models import RegisteredUser
-from forum.models import Discussion, Comment, PesertaEvent
+from forum_v2.models import Discussion, Comment, PesertaEvent
 from django.contrib.auth.models import User
 
 def get_all_discussion(request):
 
     query = request.GET.get('q')
+    query_event = request.GET.get('q_event')
+    data = []
+    data_event = []
+
+    print(query)
+    print(query_event)
+
+
     if query:
         discussions = Discussion.objects.filter(title__icontains=query)
-    else:
-        discussions = Discussion.objects.all()
 
-    data = []
-    
-    for item in discussions:
-        data.append({
-            "pk" : item.pk,
-            "fields" : {
-                "user" : { 
-                        "username" : item.user.user.username
-                        },
-               
-                "date" : item.date,
-                "title" : item.title,
-                "body" : item.body,             
+        for item in discussions:
+            data.append({
+                "pk" : item.pk,
+                "fields" : {
+                    "user" : { 
+                            "username" : item.user.user.username
+                            },
+                
+                    "date" : item.date,
+                    "title" : item.title,
+                    "body" : item.body,             
+            }
+        })
+    elif query_event:
+        events = Event.objects.filter(judul__icontains=query_event)
+
+        for item in events:
+            data_event.append({
+                "id": item.id,
+                "fields": {
+                    "judul": item.judul,
+                    "penyelenggara": item.penyelenggara,
+                    "detail": item.detail,
+                    "tanggal": item.tanggal_waktu_mulai,
+                    "lokasi": item.lokasi
             }
         })
 
+    else:
+        discussions = Discussion.objects.all()
+        events = Event.objects.all()  
+
+        for item in discussions:
+            data.append({
+                "pk" : item.pk,
+                "fields" : {
+                    "user" : { 
+                            "username" : item.user.user.username
+                            },
+                
+                    "date" : item.date,
+                    "title" : item.title,
+                    "body" : item.body,             
+            }
+        })
+
+        for item in events:
+            data_event.append({
+                "id": item.id,
+                "fields": {
+                    "judul": item.judul,
+                    "penyelenggara": item.penyelenggara,
+                    "detail": item.detail,
+                    "tanggal": item.tanggal_waktu_mulai,
+                    "lokasi": item.lokasi
+            }
+        })
+
+    
+
     context={
         'discussion_item':data,
+        'event_item':data_event
     }
     # return JsonResponse(data, safe=False)
     return render(request,'discussion.html',context)
@@ -174,6 +225,8 @@ def delete_comment(request, id):
 def event(request, id):
     id_logged_in = request.session.get('user_id')
     context = get_detail_event(id)
+    print("context")
+    print(context)
 
     # dt_obj_mulai = datetime.strptime(context['tanggal_waktu_mulai'], "%B %d, %Y, %I:%M %p")
     # dt_obj_selesai = datetime.strptime(context['tanggal_waktu_selesai'], "%B %d, %Y, %I:%M %p")
@@ -193,8 +246,17 @@ def event(request, id):
 
 def events(request):
     if(request.method == 'GET'):
-        data = Event.objects.all()
-        return JsonResponse({"error": "user Dibuat"}, status=200)
+        query = request.GET.get('q')
+        if query:
+            events = Event.objects.filter(judul__icontains=query)
+        else:
+            events = Event.objects.all()
+
+        event_data = []
+
+        
+
+        return JsonResponse({"success": "success fetching events"}, status=200)
 
     
 def get_detail_event(id):
