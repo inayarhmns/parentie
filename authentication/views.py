@@ -48,7 +48,7 @@ def register(request):
             pengguna_baru = RegisteredUser.objects.create(user=user, nama = nama, peran = peran, domisili = domisili, agama = agama, umur = umur, golongan_darah = golongan_darah, kondisi_ibu = kondisi_ibu, umur_bayi = umur_bayi, jenis_kelamin_bayi = jenis_kelamin)
             
             pengguna_baru.save()
-            return render(request, "login.html")
+            return redirect('auth:auth_login')
         
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
@@ -142,9 +142,3 @@ def user_logout(request):
         "status": False,
         "message": "Invalid request method."
     }, status=405)
-
-
-# def get_user(request):
-#     return RegisteredUser.objects.filter(user.username = request.user.username)
-
-
