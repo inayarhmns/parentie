@@ -1,8 +1,11 @@
+import datetime
 from django.shortcuts import render, redirect
 from forum.models import Event
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.utils.timezone import make_aware
+from django.utils.dateparse import parse_datetime
 
 
 
@@ -229,10 +232,19 @@ def get_detail_discussion(request, id):
 
 def event(request, id):
     id_logged_in = request.session.get('user_id')
-    print(id_logged_in)
     context = get_detail_event(id)
+
+    # dt_obj_mulai = datetime.strptime(context['tanggal_waktu_mulai'], "%B %d, %Y, %I:%M %p")
+    # dt_obj_selesai = datetime.strptime(context['tanggal_waktu_selesai'], "%B %d, %Y, %I:%M %p")
+
+    # context['time_mulai'] = dt_obj_mulai.strftime("%H:%M")
+    # context['time_selesai'] = dt_obj_selesai.strftime("%H:%M")
+
+    # print(context['time_mulai'])
+
     if id_logged_in:
         context["id_logged_in"] = id_logged_in
+        print(context["id_logged_in"])
     else:
         context["id_logged_in"] = ""
     return render(request, 'detail_event.html', context)
@@ -263,11 +275,22 @@ def create_detail_event(request, id):
             lokasi = request.POST.get('lokasi')
             tanggal_waktu_mulai = request.POST.get('tanggal_waktu_mulai')
             tanggal_waktu_selesai = request.POST.get('tanggal_waktu_selesai')
+            waktu_mulai = request.POST.get('waktu_mulai')
+            waktu_selesai = request.POST.get('waktu_selesai')
             link_event = request.POST.get('link_event')
             nama_contact_person = request.POST.get('nama_contact_person')
             nomor_contact_person = request.POST.get('nomor_contact_person')
 
-            event = Event(user, judul,detail, penyelenggara, lokasi, tanggal_waktu_mulai, tanggal_waktu_selesai, link_event, nama_contact_person, nomor_contact_person)
+            mulai = datetime.datetime.strptime(tanggal_waktu_mulai + ' ' + waktu_mulai, "%m/%d/%Y %H:%M")
+            selesai = datetime.datetime.strptime(tanggal_waktu_selesai + ' ' + waktu_selesai, "%m/%d/%Y %H:%M")
+            print("mulai & selesai")
+            print(mulai)
+            print(selesai)
+            
+            mulai_aware = make_aware(mulai)
+            selesai_aware = make_aware(selesai)
+
+            event = Event(user, judul,detail, penyelenggara, lokasi, mulai_aware, selesai_aware, link_event, nama_contact_person, nomor_contact_person)
             event.save()
 
             return JsonResponse({"success": "Event added successfully"}, status=200)
@@ -277,35 +300,100 @@ def create_detail_event(request, id):
     
 @csrf_exempt
 def update_detail_event(request, id):
-    print(request)
-    print("request")
-    data = Event.objects.filter(id=id).first()
-    if not data:
-        return JsonResponse({"error": "Event not found"}, status=404)
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            event = Event.objects.filter(id=id).first()
+
+            if not event:
+                return JsonResponse({"error": "Event not found"}, status=404)
+
+
+            event.judul = body['judul']
+            print(event.judul) 
+            event.detail = body['detail']  
+            event.penyelenggara = body['penyelenggara']  
+            event.lokasi = body['lokasi']  
+            event.link_event = body['link']  
+            event.nama_contact_person = body['nama_cp']  
+            event.nomor_contact_person = body['nomor_cp'] 
+
+            print(event) 
+
+            event.save()
+
+
+
+
+            # Assuming success response
+            response_data = {'message': 'Event updated successfully!'}
+            return JsonResponse(response_data, status=200)
+        
+        except json.JSONDecodeError as e:
+            # JSON decoding error
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        
+        except Exception as e:
+            # Handle other exceptions
+            return JsonResponse({'error': str(e)}, status=500)
+
+    else:
+        # Handle other HTTP methods if needed
+        return JsonResponse({'error': 'Method not allowed'}, status=405)    # print(request)
+
+    # if(request.method == "POST"):
+    #     # user = request.PUT.get('user')
+    #     tanggal_mulai = request.POST.get('tanggal_mulai')
+    #     print(tanggal_mulai)
+
+    # data = Event.objects.filter(id=id).first()
+    # if not data:
+    #     return JsonResponse({"error": "Event not found"}, status=404)
     
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
+    # body = json.loads(request.body)
 
-    print(body)
-    print("body")
+    # print("body")
+    # print(body)
+
+    # data.user = body.get('user', data.user)
+    # data.judul = body.get('judul', data.judul)
+    # data.detail = body.get('detail', data.detail)
+    # data.penyelenggara = body.get('penyelenggara', data.penyelenggara)
+    # data.lokasi = body.get('lokasi', data.lokasi)
+    # data.link_event = body.get('link_event', data.link_event)
+    # data.nama_contact_person = body.get('nama_contact_person', data.nama_contact_person)
+    # data.nomor_contact_person = body.get('nomor_contact_person', data.nomor_contact_person)
+
+    # tanggal_mulai = body.get('tanggal_mulai', data.tanggal_mulai)
+    # # tanggal_waktu_selesai = str(parse_datetime(body.get('tanggal_waktu_selesai', data.tanggal_waktu_selesai)))
+
+    # print(tanggal_mulai)
+    # print(data.tanggal_waktu_mulai)
+    # data.tanggal_waktu_mulai = tanggal_mulai
+    # # data.tanggal_waktu_selesai = tanggal_waktu_selesai
+    
+    # # waktu_mulai = body.get('waktu_mulai')
+    # # waktu_selesai = body.get('waktu_selesai')
+
+    # # print("tgl")
+    # # print(type(tanggal_waktu_mulai))
+    # # print(tanggal_waktu_mulai)
+
+    # # print("waktu")
+    # # print(type(waktu_mulai))
+    # # print(waktu_mulai)
 
 
-    data.user = body.get('user', data.user)
-    data.judul = body.get('judul', data.judul)
-    data.detail = body.get('detail', data.detail)
-    data.penyelenggara = body.get('penyelenggara', data.penyelenggara)
-    data.lokasi = body.get('lokasi', data.lokasi)
-    data.tanggal_waktu_mulai = body.get('tanggal_waktu_mulai', data.tanggal_waktu_mulai)
-    data.tanggal_waktu_selesai = body.get('tanggal_waktu_selesai', data.tanggal_waktu_selesai)
-    data.link_event = body.get('link_event', data.link_event)
-    data.nama_contact_person = body.get('nama_contact_person', data.nama_contact_person)
-    data.nomor_contact_person = body.get('nomor_contact_person', data.nomor_contact_person)
+    # # mulai = datetime.datetime.strptime(tanggal_waktu_mulai + ' ' + waktu_mulai, "%m/%d/%Y %H:%M")
+    # # selesai = datetime.datetime.strptime(tanggal_waktu_selesai + ' ' + waktu_selesai, "%m/%d/%Y %H:%M")
+    # # data.tanggal_waktu_mulai = make_aware(mulai)
+    # # data.tanggal_waktu_selesai = make_aware(selesai)
 
-    data.save()
+    # data.save()
 
-    return JsonResponse({"success": "Event updated successfully"}, status=200)
+    # return JsonResponse({"success": "Event updated successfully"}, status=200)
 
-    return JsonResponse({"error": "Invalid request method"}, status=405)
+    # return JsonResponse({"error": "Invalid request method"}, status=405)
     
 
 @csrf_exempt
