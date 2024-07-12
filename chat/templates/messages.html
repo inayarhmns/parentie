@@ -49,9 +49,9 @@
                                             </div>
                                             <div class="user_info">
                                                 {% if thread.first_person == user %}
-                                                    <span>{{ thread.second_person.username }}</span>
+                                                    <span  style="text-transform: capitalize;">{{ thread.second_person.username }}</span>
                                                 {% else %}
-                                                    <span>{{ thread.first_person.username }}</span>
+                                                    <span style="text-transform: capitalize;">{{ thread.first_person.username }}</span>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -65,7 +65,11 @@
             </div>
             <div class="col-md-8 col-xl-6 chat h-100 mt-4">
                 <div class="card">
-                    {% for thread in threads %}
+                    <div class="default-message is_active">
+                        Mulai konsultasi untuk donor ASI!
+                    </div>
+                    <div class="chat-content">
+                        {% for thread in threads %}
                         <div class="messages-wrapper {% if thread == active_thread %}is_active{% else %}hide{% endif %}" chat-id="chat_{{ thread.id }}" other-user-id="{% if thread.first_person == user %}{{ thread.second_person.id }}{% else %}{{ thread.first_person.id }}{% endif %}">
                             <div class="card-header msg_head">
                                 <div class="d-flex bd-highlight">
@@ -75,18 +79,14 @@
                                     </div>
                                     <div class="user_info">
                                         {% if thread.first_person == user %}
-                                            <span>{{ thread.second_person.username }}</span>
+                                            <span style="text-transform: capitalize;">{{ thread.second_person.username }}</span>
                                         {% else %}
-                                            <span>{{ thread.first_person.username }}</span>
+                                            <span style="text-transform: capitalize;">{{ thread.first_person.username }}</span>
                                         {% endif %}
                                         <p>{{ thread.chatmessage_thread.all.count }} messages</p>
                                     </div>
-                                    <div class="video_cam">
-                                        <span><i class="fas fa-video"></i></span>
-                                        <span><i class="fas fa-phone"></i></span>
-                                    </div>
+                                  
                                 </div>
-                                <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
                                 <div class="action_menu">
                                     <ul>
                                         <li><i class="fas fa-user-circle"></i> View profile</li>
@@ -124,6 +124,8 @@
                             </div>
                         </div>
                     {% endfor %}
+                    </div>
+                    
                     <div class="card-footer">
                         <form id="send-message-form">
                             <div class="input-group">

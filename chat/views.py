@@ -20,7 +20,7 @@ def messages_page(request, thread_id=None):
             active_thread = None
     else:
         active_thread = threads.first()
-
+    
     context = {
         'threads': threads,
         'active_thread': active_thread,
