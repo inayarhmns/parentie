@@ -284,12 +284,16 @@ html {
 }
 .default-message.is_active {
     display: block;
-    padding: 20px;
     text-align: center;
     font-weight: bold;
     font-size: larger;
     color: #F4FEFF;
     align-items: center;
     justify-content: center;
-    padding: 50px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.text-medium{
+    font-size: small;
 }

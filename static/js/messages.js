@@ -179,4 +179,6 @@ $(document).ready(function() {
         let thread_id = chat_id.replace('chat_', '');
         return thread_id;
     }
+
+    
 });

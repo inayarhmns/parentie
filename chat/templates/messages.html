@@ -63,10 +63,32 @@
                     <div class="card-footer"></div>
                 </div>
             </div>
-            <div class="col-md-8 col-xl-6 chat h-100 mt-4">
+            <div class="col-md-8 col-xl-6 chat h-100 mt-4 ">
                 <div class="card">
                     <div class="default-message is_active">
-                        Mulai konsultasi untuk donor ASI!
+                        <p style="color: #172048;">Hal-hal yang perlu diperhatikan menurut Peraturan Pemerintah Nomor 33 Tahun 2012 tentang Pemberian ASI Eksklusif 
+                        </p>             
+                        <table class="text-medium table table-striped">
+                            <thead>
+</div>
+                            </thead>
+                            <tbody style="margin-top: 10px;">
+                                <tr>
+                                    <td> Ibu pendonor tidak ada riwayat menderita penyakit menular, seperti hepatitis, HIV, atau HTLV2
+                                    </td>
+                                  </tr>
+                              <tr>
+                                <td>Ibu pendonor idak sedang mengonsumsi suplemen herbal dan obat-obatan medis, termasuk insulin, hormon pengganti tiroid, pil KB</td>
+                              </tr>
+                              <tr>
+                                <td>Identitas, agama, dan alamat pendonor ASI diketahui dengan jelas oleh ibu atau keluarga dari bayi penerima ASI</td>
+                              </tr>
+                              <tr>
+                                <td>ASI hasil donor tidak boleh diperjualbelikan</td>
+                              </tr>
+
+                            </tbody>
+                          </table>
                     </div>
                     <div class="chat-content">
                         {% for thread in threads %}
@@ -86,14 +108,6 @@
                                         <p>{{ thread.chatmessage_thread.all.count }} messages</p>
                                     </div>
                                   
-                                </div>
-                                <div class="action_menu">
-                                    <ul>
-                                        <li><i class="fas fa-user-circle"></i> View profile</li>
-                                        <li><i class="fas fa-users"></i> Add to close friends</li>
-                                        <li><i class="fas fa-plus"></i> Add to group</li>
-                                        <li><i class="fas fa-ban"></i> Block</li>
-                                    </ul>
                                 </div>
                             </div>
                             <div class="card-body msg_card_body">
