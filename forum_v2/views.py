@@ -101,8 +101,8 @@ def get_all_discussion(request):
     
 
     context={
-        'discussion_item':data,
-        'event_item':data_event,
+        'discussion_item':data[::-1],
+        'event_item':data_event[::-1],
         'user' : user
     }
     # return JsonResponse(data, safe=False)
