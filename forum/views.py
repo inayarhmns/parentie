@@ -280,40 +280,35 @@ def create_detail_event(request, id):
     
 @csrf_exempt
 def update_detail_event(request, id):
-    try:
-        if request.method == "PUT":
-            data = Event.objects.filter(id=id).first()
-            if not data:
-                return JsonResponse({"error": "Event not found"}, status=404)
-            
-            body = json.loads(request.body)
-            user = body.get('user', data.user)
-            judul = body.get('judul', data.judul)
-            detail = body.get('detail', data.detail)
-            penyelenggara = body.get('penyelenggara', data.penyelenggara)
-            lokasi = body.get('lokasi', data.lokasi)
-            tanggal_waktu_mulai = body.get('tanggal_waktu_mulai', data.tanggal_waktu_mulai)
-            tanggal_waktu_selesai = body.get('tanggal_waktu_selesai', data.tanggal_waktu_selesai)
-            link_event = body.get('link_event', data.link_event)
-            nama_contact_person = body.get('nama_contact_person', data.nama_contact_person)
-            nomor_contact_person = body.get('nomor_contact_person', data.nomor_contact_person)
+    print(request)
+    print("request")
+    data = Event.objects.filter(id=id).first()
+    if not data:
+        return JsonResponse({"error": "Event not found"}, status=404)
+    
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
 
-            data.user = user
-            data.judul = judul
-            data.detail = detail
-            data.penyelenggara = penyelenggara
-            data.lokasi = lokasi
-            data.tanggal_waktu_mulai = tanggal_waktu_mulai
-            data.tanggal_waktu_selesai = tanggal_waktu_selesai
-            data.link_event = link_event
-            data.nama_contact_person = nama_contact_person
-            data.nomor_contact_person = nomor_contact_person
+    print(body)
+    print("body")
 
-            data.save()
 
-            return JsonResponse({"success": "Event updated successfully"}, status=200)
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+    data.user = body.get('user', data.user)
+    data.judul = body.get('judul', data.judul)
+    data.detail = body.get('detail', data.detail)
+    data.penyelenggara = body.get('penyelenggara', data.penyelenggara)
+    data.lokasi = body.get('lokasi', data.lokasi)
+    data.tanggal_waktu_mulai = body.get('tanggal_waktu_mulai', data.tanggal_waktu_mulai)
+    data.tanggal_waktu_selesai = body.get('tanggal_waktu_selesai', data.tanggal_waktu_selesai)
+    data.link_event = body.get('link_event', data.link_event)
+    data.nama_contact_person = body.get('nama_contact_person', data.nama_contact_person)
+    data.nomor_contact_person = body.get('nomor_contact_person', data.nomor_contact_person)
+
+    data.save()
+
+    return JsonResponse({"success": "Event updated successfully"}, status=200)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
     
 
 @csrf_exempt

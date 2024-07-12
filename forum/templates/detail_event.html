@@ -15,7 +15,7 @@
   <div class="flex items-center justify-center z-50 relative">
     <div class="lg:w-[60vw] ml-10 mr-10 mt-6 text-justify">{{ detail }}</div>
   </div>
-  <div class="flex items-center justify-center z-50 relative">
+  <div class="flex items-center justify-center z-30 relative">
     <div class="lg:grid lg:grid-cols-2 gap-4 p-8 lg:w-[80vw]">
       <div class="bg-white rounded-md p-6">
         <div class="flex pb-2">
@@ -157,7 +157,7 @@
               </div>
               <!-- Modal body -->
               <div class="p-4 md:p-5 space-y-4">
-                <form class="" action="#">
+                <form id="updateEvent">
                     <div class="pb-4">
                         <label for="judul" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Event</label>
                         <input type="text" name="judul" id="judul" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ judul }}">
@@ -224,7 +224,7 @@
                         </div>
                     </div>
                     <div class="flex justify-center mb-8">
-                        <button type="submit" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Simpan</button>
+                        <button type="button" onclick="updateEventData()" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Simpan</button>
                         <button data-modal-hide="static-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Batal</button>
                     </div>
                 </form>
@@ -273,6 +273,32 @@
             }
         });
     }
+
+    function updateEventData() {
+    var formData = $('#updateEvent').serializeArray();
+    var jsonData = {};
+
+    $.each(formData, function() {
+        jsonData[this.name] = this.value;
+    });
+
+    $.ajax({
+        url: "{% url 'forum:update_detail_event' id %}",
+        type: 'PUT',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        contentType: 'application/json',  
+        data: JSON.stringify(jsonData),   
+        success: function(response) {
+            // alert('Event updated successfully!');
+        },
+        error: function(xhr, status, error) {
+            // alert('An error occurred while trying to update the event.');
+        }
+    });
+}
+
 </script>
 
 
