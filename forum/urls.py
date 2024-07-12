@@ -1,5 +1,5 @@
 from django.urls import path
-from forum.views import events, get_detail_event, delete_detail_event, update_detail_event, create_detail_event, event, add_discussion, get_all_discussion
+from forum.views import events, get_detail_event, delete_detail_event, update_detail_event, create_detail_event, event, get_detail_discussion, get_all_discussion
 
 app_name = 'forum'
 

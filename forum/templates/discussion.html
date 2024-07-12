@@ -4,24 +4,30 @@
     <title>Discussion</title>
 {% endblock meta %}
 {% block content %}
-<div class="text-center mb-8">
-    <h1 class="text-4xl font-bold">Discussion</h1>
-</div>
-<div class="flex flex-col items-center space-y-4 pb-4">
-    {% for item in discussion_item %}
-    <a href="{% url 'forum:get_discussion_by_id' item.pk %}" class="w-3/5 max-w-sm lg:max-w-full lg:flex rounded-lg shadow-lg no-underline">
-        <div class="border-r border-b border-l border-gray-400 lg:border-0 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal w-full">
-            <div class="flex items-center justify-between text-gray-600 text-sm mb-4">
-                <p class="font-bold">{{item.fields.user.username}}</p>
-                <p>{{item.fields.date}}</p>
-            </div>
-            <div class="mb-4">
-                <div class="text-gray-900 font-bold text-xl mb-2">{{item.fields.title}}</div>
-                <p class="text-gray-700 text-base">{{ item.fields.body |truncatewords:25 }}</p>
-            </div>
-        </div>
-    </a>
-    {% endfor %}
+<div class="min-h-screen" style="background-color: #f4feff;">
+    <div>
+        <img src="{% static 'cuate.png' %}" class="absolute top-0 right-0 max-w-[50vw] max-h-[480px] z-10 pointer-events-none">
 
+        <div class="mb-8 lg:ml-20 relative z-20 max-w-[40vw]">
+            <h1 class="pt-8 text-left font-bold text-5xl pr-black max-h-full">Mulai Berdiskusi dan Explore Event Parenting</h1>
+        </div>
+    </div>
+
+    <div class="flex flex-col items-center space-y-4 pb-4 relative">
+        {% for item in discussion_item %}
+        <a href="{% url 'forum:get_discussion_by_id' item.pk %}" class="w-3/5 max-w-sm lg:max-w-full lg:flex rounded-lg shadow-lg no-underline">
+            <div class="border-r border-b border-l border-gray-400 lg:border-0 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal w-full">
+                <div class="flex items-center justify-between text-gray-600 text-sm mb-4">
+                    <p class="font-bold">{{ item.fields.user.username }}</p>
+                    <p>{{ item.fields.date }}</p>
+                </div>
+                <div class="mb-4">
+                    <div class="text-gray-900 font-bold text-xl mb-2">{{ item.fields.title }}</div>
+                    <p class="text-gray-700 text-base">{{ item.fields.body | truncatewords:25 }}</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
 </div>
 {% endblock content %}
