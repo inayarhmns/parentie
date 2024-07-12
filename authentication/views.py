@@ -5,38 +5,68 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from authentication.models import RegisteredUser
-
+import json
+from django.shortcuts import render
+from django.conf import settings
+import os
 
 @csrf_exempt
 def register(request):
     if (request.method == "POST"):
         try:
-            username = request.POST.get("username")
-            password = request.POST.get("password")
-            nama = request.POST.get("nama")
-            peran = request.POST.get("peran")
-            domisili = request.POST.get("domisili")
-            agama = request.POST.get("agama")
-            umur = request.POST.get("umur")
-            golongan_darah = request.POST.get("golongan_darah")
-            kondisi_ibu = request.POST.get("kondisi_ibu")
-            umur_bayi = request.POST.get("umur_bayi")
-            jenis_kelamin = request.POST.get("jenis_kelamin")
+            username = request.POST["username"]
+            password = request.POST["password"]
+            nama = request.POST["nama"]
+            peran = request.POST["peran"]
+            domisili = request.POST["domisili"]
+            agama = request.POST["agama"]
+            umur = request.POST["umur"]
+            if umur == '':
+                umur = None
+            
+            try: 
+                golongan_darah = request.POST["golongan_darah"]
+            except:
+                golongan_darah = None
+
+            try: 
+                kondisi_ibu = request.POST["kondisi_ibu"]
+            except:
+                kondisi_ibu = None
+
+            try: 
+                umur_bayi = request.POST["umur_bayi"]
+            except:
+                umur_bayi = None
+
+            try:
+                jenis_kelamin = request.POST["jenis_kelamin"]
+            except:
+                jenis_kelamin = None
 
             user = User.objects.create_user(username=username, password=password)
             pengguna_baru = RegisteredUser.objects.create(user=user, nama = nama, peran = peran, domisili = domisili, agama = agama, umur = umur, golongan_darah = golongan_darah, kondisi_ibu = kondisi_ibu, umur_bayi = umur_bayi, jenis_kelamin_bayi = jenis_kelamin)
             
             pengguna_baru.save()
-            return JsonResponse({"instance": "user Dibuat"}, status=200)
+            return render(request, "login.html")
         
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
-     
-    return JsonResponse({"instance": "gagal Dibuat"}, status=400)
+    
+
+    json_file_path = os.path.join(settings.BASE_DIR, 'static/json/kota.json')
+
+    with open(json_file_path, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+        cities = [item['text'] for item in data['result']]
+        context = {
+            'cities': cities
+        }
+    return render(request, "register.html", context)
 
 
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -96,11 +126,25 @@ def get_session(request):
 
 
 @csrf_exempt
-def logout(request):
-	if request.user.is_authenticated or ['loggedIn']:
-		if request.user.is_authenticated:
-			auth_logout(request)
-		return JsonResponse({"status" : "logged out"}, status=200)
-	return JsonResponse({"status": "Not yet authenticated"}, status =403)
+def user_logout(request):
+    if request.method == "POST":
+        try:
+            logout(request)
+            request.session.flush()
+            return JsonResponse({
+                "status": True,
+                "message": "Successfully Logged Out!",
+            }, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({
+        "status": False,
+        "message": "Invalid request method."
+    }, status=405)
+
+
+# def get_user(request):
+#     return RegisteredUser.objects.filter(user.username = request.user.username)
 
 

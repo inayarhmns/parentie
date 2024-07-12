@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+{% block meta %}
+<head>
+    <title>Donor</title>
+</head>
+{% endblock meta %}
+{% block content %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<div class="text-pr-black flex items-center justify-center min-h-screen" style="background-color: #F4FEFF;">
+    <div class="container mx-auto max-w-lg shadow-md rounded-lg overflow-hidden mt-20 mb-20">
+        <form id="filter-form" action="" method="get" class="mb-4">
+            <label for="tag" class="block text-sm font-medium text-gray-700">Filter</label>
+            <div class="mt-1 relative">
+                <select id="tag" name="tag" class="block appearance-none w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mb-4">
+                    <option value="">Semua</option>
+                    <option value="butuh" {% if tag_filter == 'butuh' %}selected{% endif %}>Butuh ASI</option>
+                    <option value="donor" {% if tag_filter == 'donor' %}selected{% endif %}>Donor ASI</option>
+                </select>
+                <select id="domisili" name="domisili" class="block appearance-none w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mb-4">
+                    <option value="">Semua</option>
+                    {% for city in cities %}
+                    <option value="{{ city }}" {% if city == domisili_filter %}selected{% endif %}>{{ city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="mt-2 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-gradient hover:bg-blue-gradient focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Terapkan Filter
+            </button>
+        </form>
+        <div class="grid grid-cols-1 gap-4">
+            {% if donors %}
+    {% for donor in donors %}
+        <div class="relative bg-white p-6 rounded-lg shadow-md">
+            <div class="absolute top-0 right-0 p-5">
+                {% if donor.tag == 'butuh' %}
+                    <div class="flex flex-row gap-5">                            
+                        <p class="text-sm text-pr-grey font-semibold">{{ donor.user.domisili }}</p>
+                        <div class="bg-pr-pink text-white  py-1 px-3 rounded-sm">
+                            <p class="text-xs">BUTUH ASI</p>
+                        </div>
+                    </div>
+                {% elif donor.tag == 'donor' %}
+                    <div class="flex flex-row gap-5">                            
+                        <p class="text-sm text-pr-grey font-semibold">{{ donor.user.domisili }}</p>
+                        <div class="bg-blue-500 text-white  py-1 px-3 rounded-sm">
+                            <p class="text-xs">DONOR ASI</p>
+                        </div>
+                    </div>
+                {% endif %}
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800">{{ donor.user.nama|title }}</h2>
+                    <p class="text-sm text-gray-600">{{ donor.timestamp }}</p>
+                    <div class="grid grid-cols-4 justify-end gap-4">
+                        <div class="col-span-3 mt-2">
+                            {% if donor.tag == 'butuh' %}
+                                <p class="text-sm text-gray-600">Usia bayi: {{ donor.user.umur_bayi|default:'-' }} minggu </p>
+                                <p class="text-sm text-gray-600">Jenis kelamin bayi: {{ donor.user.jenis_kelamin|default:'-' }}</p>
+                            {% elif donor.tag == 'donor' %}
+                                <p class="text-sm text-gray-600">Agama: {{ donor.user.agama|default:'-' }} </p>
+                                <p class="text-sm text-gray-600">Usia: {{ donor.user.umur|default:'-' }} tahun </p>
+                                <p class="text-sm text-gray-600">Golongan darah: {{ donor.user.golongan_darah|default:'-' }} </p>
+                            {% endif %}
+                        </div>
+                        <button type="submit" data-user-id="{{ donor.user.id }}" class="h-min col-span-1 mt-2 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-blue-gradient hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 start-chat-btn">
+                            Konsultasi
+                        </button> 
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center text-gray-600 mt-4 mb-4">Belum ada data.</p>
+                {% endif %}
+
+        </div>
+    </div>
+</div>                
+<script>
+    $(document).ready(function() {
+        $('#tag').change(function() {
+            $.ajax({
+                url: $('#filter-form').attr('action'),
+                data: $('#filter-form').serialize(),
+                success: function(data) {
+                    $('#donor-cards').html(data.html);
+                }
+            });
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var buttons = document.querySelectorAll('.start-chat-btn');
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var targetUserId = button.getAttribute('data-user-id');
+                startChat(targetUserId);
+            });
+        });
+    });
+
+    function startChat(targetUserId) {
+        // Send a request to the server to create or open a chat thread
+        fetch('start-chat/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Adjust if you're using Django or another framework with CSRF protection
+            },
+            body: JSON.stringify({ target_user_id: targetUserId })
+        })
+        .then(response => 
+            response.json()
+    )
+        .then(data => {
+            if (data.success) {
+                // Redirect to the chat page
+                window.location.href = '/chat/' + data.thread_id;
+            } else {
+                alert('Failed to start chat: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while trying to start the chat.');
+        });
+    }
+
+    // Function to get CSRF token (Django specific)
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock content %}                

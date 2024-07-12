@@ -1,0 +1,81 @@
+<!-- templates/includes/_navbar.html -->
+{% load static %}
+
+<style>
+    .navbar-light .navbar-nav .nav-link {
+        color: #6c757d;
+    }
+    .navbar-light .navbar-nav .nav-link:hover {
+        border-bottom: 2px solid #6574cd;
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-md">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'img/parentie.svg' %}" alt="Logo" width="132" height="26">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/donor/">Donor</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/chat/">Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user_profile/">Profil</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/login" onclick="logoutUser(event)">Keluar</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/auth/login">Masuk</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        function logoutUser(event) {
+      event.preventDefault();
+      fetch('/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status) {
+          window.location.href = '/auth/login';
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+    document.getElementById('navbar-toggler').addEventListener('click', function() {
+      var menu = document.getElementById('navbar-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    document.getElementById('user-menu-button').addEventListener('click', function() {
+      var menu = document.getElementById('user-menu');
+      menu.classList.toggle('hidden');
+    });
+    </script>
