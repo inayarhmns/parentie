@@ -40,14 +40,14 @@
       </button>
       <div class="hidden lg:flex lg:items-center lg:w-auto w-full" id="navbar-menu">
         <ul class="lg:flex items-center justify-between text-base text-gray-700 pt-4 lg:pt-0">
-          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/">Home</a></li>
-          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/donor/">Services</a></li>
+          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/">Beranda</a></li>
+          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/donor/">Donor</a></li>
           <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/chat/">Chat</a></li>
-          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/user_profile/">Profile</a></li>
+          <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/user_profile/">Profil</a></li>
           {% if user.is_authenticated %}
-            <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/auth/login" onclick="logoutUser(event)">Logout</a></li>
+            <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/auth/login" onclick="logoutUser(event)">Keluar</a></li>
           {% else %}
-            <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/auth/login">Login</a></li>
+            <li><a class="lg:p-4 py-3 px-0 block border-b-2 border-transparent hover:border-indigo-400" href="/auth/login">Masuk</a></li>
           {% endif %}
         </ul>
       </div>

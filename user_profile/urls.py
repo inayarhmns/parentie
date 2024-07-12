@@ -5,7 +5,7 @@ app_name = 'user_profile'
 
 urlpatterns = [
     path('', get_profile, name='get_profile'),
-    path('/butuh_asi', butuh_asi, name='butuh_asi'),
-    path('/donor_asi', donor_asi, name='donor_asi'),
+    path('butuh_asi', butuh_asi, name='butuh_asi'),
+    path('donor_asi', donor_asi, name='donor_asi'),
     path('mark_as_done/<int:donor_id>/', mark_as_done, name='mark_as_done'),
 ]

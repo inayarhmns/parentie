@@ -6,29 +6,42 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
-from authentication.models import User
 from chat.models import Thread
 from authentication.models import RegisteredUser
 from django.db.models import Q
+import os
+from django.conf import settings
 
 # Create your views here.
 
 @login_required(login_url='/auth/login')
 def get_all_donors(request):
-    domisili = request.session.get('domisili')
-    tag_filter = request.GET.get('tag', None)  # Get the 'tag' parameter from GET request
-    
+    tag_filter = request.GET.get('tag')
+    domisili_filter = request.GET.get('domisili')
+    username = request.session.get("username")
+    registered_user = RegisteredUser.objects.get(user__username=username)
+
+    json_file_path = os.path.join(settings.BASE_DIR, 'static/json/kota.json')
+
+    with open(json_file_path, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+        cities = [item['text'] for item in data['result']]
+
     if tag_filter:
-        donors = Donor.objects.filter(user__domisili="Bandung", tag=tag_filter)
+        if domisili_filter:
+            donors = Donor.objects.filter(user__domisili=domisili_filter, tag=tag_filter, selesai=False).exclude(user=registered_user)
+        else:
+            donors = Donor.objects.filter(tag=tag_filter, selesai=False).exclude(user=registered_user)
+    elif domisili_filter:
+        donors = Donor.objects.filter(user__domisili=domisili_filter, selesai=False).exclude(user=registered_user)
     else:
-        donors = Donor.objects.filter(user__domisili="Bandung")
-    
+        donors = Donor.objects.filter(selesai=False).exclude(user=registered_user)
+
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        html = render_to_string('donor_cards.html', {'donors': donors})
+        html = render_to_string('donor_cards.html', {'donors': donors[::-1]})
         return JsonResponse({'html': html})
-    
-    
-    return render(request, 'donor.html', {'donors': donors, 'tag_filter': tag_filter})
+
+    return render(request, 'donor.html', {'donors': donors[::-1], 'tag_filter': tag_filter, 'domisili_filter': domisili_filter, 'cities': cities})
 
 
 @csrf_exempt

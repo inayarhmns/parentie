@@ -49,7 +49,6 @@ def register(request):
             
             pengguna_baru.save()
             return render(request, "login.html")
-            return JsonResponse({"instance": "user Dibuat"}, status=200)
         
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
