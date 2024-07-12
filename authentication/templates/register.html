@@ -4,195 +4,252 @@
     <title>Daftar</title>
 {% endblock meta %}
 {% block content %}
-    <!-- <script src="{% static 'js/register.js' %}"></script> -->
-    <div class="items-center justify-center text-center main-content">
-        <div class="container register-container">
-            <div class="registrasi">
-                <section class="bg-gray-50 dark:bg-gray-900">
-                    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 overflow-y-auto">
-                            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                                    Daftar
-                                </h1>
-                                <form class="space-y-4 md:space-y-6" action="{% url 'auth:register' %}" method="POST">
-                                    {% csrf_token %}
-                                    <div>
-                                        <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                                        <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                    </div>
-                                    <div>
-                                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                        <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                    </div>
-                                    <div>
-                                        <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Lengkap</label>
-                                        <input type="text" name="nama" id="nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="peran" class="block mb-2 text-sm font-medium text-gray-900">Peran</label>
-                                        <div class="relative">
-                                            <select id="peran" name="peran" class="block appearance-none w-full bg-white border border-gray-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                <option value="ayah">Ayah</option>
-                                                <option value="ibu">Ibu</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                    <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="domisili" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Domisili</label>
-                                        <input type="text" name="domisili" id="domisili" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label for="agama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Agama</label>
-                                        <div class="relative">
-                                            <select id="agama" name="agama" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                <option value="islam">Islam</option>
-                                                <option value="kristen">Kristen</option>
-                                                <option value="katolik">Katolik</option>
-                                                <option value="hindu">Hindu</option>
-                                                <option value="buddha">Buddha</option>
-                                                <option value="khonghucu">Khonghucu</option>
-                                                <option value="rahasia">Rahasia</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                    <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="umur" class="hidden mb-4">
-                                        <label for="umur" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Umur</label>
-                                        <input type="number" id="umur" name="umur" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Enter additional info">
-                                    </div>
-
-                                    <div id="golongan_darah" class="hidden mb-4">
-                                        <label for="golongan_darah" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Golongan Darah</label>
-                                        <div class="relative">
-                                            <select id="golongan_darah" name="golongan_darah" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                <option value="A">A</option>
-                                                <option value="B">B</option>
-                                                <option value="AB">AB</option>
-                                                <option value="O">O</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                    <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="kondisi_ibu" class="hidden mb-4">
-                                        <label for="kondisi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kondisi Ibu</label>
-                                        <div class="relative">
-                                            <select id="kondisi_ibu" name="kondisi_ibu" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                <option value="hamil">Hamil</option>
-                                                <option value="menyusui">Menyusui</option>
-                                                <option value="keduanya">Keduanya</option>
-                                                <option value="tidak">Tidak Keduanya</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                    <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.
-                                                    7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="umur-kehamilan" class="hidden mb-4">
-                                        <label for="umur-kehamilan" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Umur Kehamilan</label>
-                                        <input type="number" id="umur-kehamilan" name="umur-kehamilan" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Enter additional info">
-                                    </div>
-
-                                    <div id="umur-bayi" class="mb-4">
-                                        <label for="umur-bayi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Umur Bayi</label>
-                                        <input type="number" id="umur-bayi" name="umur-bayi" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Enter additional info">
-                                    </div>
-
-                                    <div id="jenis-kelamin" class="mb-4">
-                                        <label for="jenis-kelamin" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Kelamin Bayi</label>
-                                        <div class="relative">
-                                            <select id="jenis-kelamin" name="jenis-kelamin" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                <option value="laki-laki">Laki-laki</option>
-                                                <option value="perempuan">Perempuan</option>
-                                            </select>
-                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                    <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
-                                    <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                                        Already have an account? <a href="#" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
-                                    </p>
-                                </form>
-                            </div>
+<div class="flex items-center justify-center min-h-screen" style="background-color: #F4FEFF;">
+    <div class="container mx-auto max-w-md shadow-md rounded-lg overflow-hidden bg-white mt-20">
+        <div class="py-8 px-6 sm:px-10">
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl font-bold leading-9 tracking-tight text-gray-900">Daftar</h2>
+            </div>
+            <form class="space-y-6" action="{% url 'auth:register' %}" method="POST">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                    <input type="text" id="username" name="username" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Username" required>
+                </div>
+                <div>
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                    <input type="password" id="password" name="password" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Username" required>
+                </div>
+                <div>
+                    <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap</label>
+                    <input type="text" id="nama" name="nama" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Username" required>
+                </div>
+                <div class="mb-4">
+                    <label for="peran" class="block mb-2 text-sm font-medium text-gray-900">Peran</label>
+                    <div class="relative">
+                        <select id="peran" name="peran" class="block appearance-none w-full bg-white border border-gray-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="Ayah">Ayah</option>
+                            <option value="Ibu">Ibu</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
+                            </svg>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="domisili" class="block mb-2 text-sm font-medium text-gray-900">Domisili</label>
+                    <div class="relative">
+                        <select id="domisili" name="domisili" class="block appearance-none w-full bg-white border border-gray-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            {% for city in cities %}
+                            <option value="{{ city }}">{{ city }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="agama" class="block mb-2 text-sm font-medium text-gray-900">Agama</label>
+                    <div class="relative">
+                        <select id="agama" name="agama" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="Islam">Islam</option>
+                            <option value="Kristen">Kristen</option>
+                            <option value="Katolik">Katolik</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Buddha">Buddha</option>
+                            <option value="Khonghucu">Khonghucu</option>
+                            <option value="-">Memilih tidak menyebutkan</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div id="umur" class="hidden mb-4">
+                    <label for="umur" class="block mb-2 text-sm font-medium text-gray-900">Umur</label>
+                    <input type="number" id="umur" name="umur" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur">
+                </div>
+
+                <div id="golongan_darah" class="hidden mb-4">
+                    <label for="golongan_darah" class="block mb-2 text-sm font-medium text-gray-900">Golongan Darah</label>
+                    <div class="relative">
+                        <select id="golongan_darah" name="golongan_darah" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="AB">AB</option>
+                            <option value="O">O</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="kondisi_ibu" class="hidden mb-4">
+                    <label for="kondisi_ibu" class="block mb-2 text-sm font-medium text-gray-900">Kondisi Ibu</label>
+                    <div class="relative">
+                        <select id="kondisi_ibu" name="kondisi_ibu" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="hamil">Hamil</option>
+                            <option value="menyusui">Menyusui</option>
+                            <option value="tidak">Tidak Keduanya</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.
+                                7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="umur-kehamilan" class="hidden mb-4">
+                    <label for="umur-kehamilan" class="block mb-2 text-sm font-medium text-gray-900">Umur Kehamilan</label>
+                    <input type="number" id="umur-kehamilan" name="umur-kehamilan" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur kehamilan">
+                </div>
+
+                <div id="umur-bayi" class="mb-4">
+                    <label for="umur-bayi" class="block mb-2 text-sm font-medium text-gray-900">Umur Bayi</label>
+                    <input type="number" id="umur-bayi" name="umur-bayi" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur bayi">
+                </div>
+
+                <div id="jenis-kelamin" class="mb-4">
+                    <label for="jenis-kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis Kelamin Bayi</label>
+                    <div class="relative">
+                        <select id="jenis-kelamin" name="jenis-kelamin" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-6 border border-blue-500 hover:border-transparent rounded-full">
+                        Daftar
+                    </button>
+                </div>
+            </form>
+            <p class="text-sm font-light text-gray-500 dark:text-gray-400 mt-5">
+                Already have an account? <a href="{% url 'auth:login' %}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
+            </p>
         </div>
     </div>
-                
+</div>                
 <script>
     document.addEventListener('DOMContentLoaded', function() {
             const peran = document.getElementById('peran');
             const umur = document.getElementById('umur');
             const goldar = document.getElementById('golongan_darah');
-            const kondisi = document.getElementById('kondisi');
+            const kondisi = document.getElementById('kondisi_ibu');
             const umurKehamilan = document.getElementById('umur-kehamilan');
             const umurBayi = document.getElementById('umur-bayi');
             const jenisKelamin = document.getElementById('jenis-kelamin');
 
+            // peran.addEventListener('change', function() {
+            //     const selectedValue = this.value;
+
+            //     if (selectedValue === 'Ibu') {
+            //         umur.classList.remove('hidden');
+            //         goldar.classList.remove('hidden');
+            //         kondisi.classList.remove('hidden');
+            //         umurBayi.classList.add('hidden');
+            //         jenisKelamin.classList.add('hidden');
+            //         umurKehamilan.classList.remove('hidden');
+
+            //     } else {
+            //         umur.classList.add('hidden');
+            //         goldar.classList.add('hidden');
+            //         kondisi.classList.add('hidden');
+            //         umurKehamilan.classList.add('hidden');
+            //         umurBayi.classList.remove('hidden');
+            //         jenisKelamin.classList.remove('hidden');
+            //     }
+            // });
+
+            // kondisi.addEventListener('change', function() {
+            //     const selectedValue = this.value;
+
+            //     if (selectedValue === 'hamil') {
+            //         umurKehamilan.classList.remove('hidden');
+            //         umurBayi.classList.add('hidden');
+            //         jenisKelamin.classList.add('hidden');
+            //     } else if (selectedValue === 'menyusui') {
+            //         umurBayi.classList.remove('hidden');
+            //         jenisKelamin.classList.remove('hidden');
+            //         umurKehamilan.classList.add('hidden');
+            //     } else {
+            //         umurKehamilan.classList.add('hidden');
+            //         umurBayi.classList.add('hidden');
+            //         jenisKelamin.classList.add('hidden');
+            //     }
+            // });
             peran.addEventListener('change', function() {
-                const selectedValue = this.value;
+            const selectedValue = this.value;
 
-                if (selectedValue === 'ibu') {
-                    umur.classList.remove('hidden');
-                    goldar.classList.remove('hidden');
-                    kondisi.classList.remove('hidden');
-                    umurBayi.classList.add('hidden');
-                    jenisKelamin.classList.add('hidden');
-                    umurKehamilan.classList.remove('hidden');
-
-                } else {
-                    umur.classList.add('hidden');
-                    goldar.classList.add('hidden');
-                    kondisi.classList.add('hidden');
-                    umurKehamilan.classList.add('hidden');
-                    umurBayi.classList.remove('hidden');
-                    jenisKelamin.classList.remove('hidden');
-                }
-            });
-
-            kondisi.addEventListener('change', function() {
-                const selectedValue = this.value;
-
-                if (selectedValue === 'hamil') {
-                    umurKehamilan.classList.remove('hidden');
-                    umurBayi.classList.add('hidden');
-                    jenisKelamin.classList.add('hidden');
-                } else if (selectedValue === 'menyusui') {
-                    umurBayi.classList.remove('hidden');
-                    jenisKelamin.classList.remove('hidden');
-                    umurKehamilan.classList.add('hidden');
-                } else {
-                    umurKehamilan.classList.add('hidden');
-                    umurBayi.classList.remove('hidden');
-                    jenisKelamin.classList.remove('hidden');
-                }
-            });
+            umur.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            goldar.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            kondisi.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            umurKehamilan.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            umurBayi.style.display = selectedValue === 'Ayah' ? 'block' : 'none';
+            jenisKelamin.style.display = selectedValue === 'Ayah' ? 'block' : 'none';
         });
+
+        kondisi.addEventListener('change', function() {
+            const selectedValue = this.value;
+
+            umurKehamilan.style.display = selectedValue === 'hamil' ? 'block' : 'none';
+            umurBayi.style.display = selectedValue === 'menyusui' ? 'block' : 'none';
+            jenisKelamin.style.display = selectedValue === 'menyusui' ? 'block' : 'none';
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    const searchInput = document.getElementById('search-input');
+    const dropdownItemsContainer = document.getElementById('dropdown-items-container');
+
+    // Fetch JSON data and populate the dropdown
+    fetch('json/kota.json')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200) {
+                data.result.forEach(item => {
+                    const aTag = document.createElement('a');
+                    aTag.textContent = item.text;
+                    aTag.className = 'block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md';
+                    dropdownItemsContainer.appendChild(aTag);
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching dropdown items:', error));
+
+    // Add event listener to filter items based on input
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const items = dropdownItemsContainer.querySelectorAll('a');
+
+        items.forEach((item) => {
+            const text = item.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
 </script>
 {% endblock content %}                

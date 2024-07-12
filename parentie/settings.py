@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'forum',
     'chat',
     'channels',
-    'donor'
+    'donor',
+    'user_profile'
 ]
 
 MIDDLEWARE = [

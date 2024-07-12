@@ -5,7 +5,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from authentication.models import RegisteredUser
-
+import json
+from django.shortcuts import render
+from django.conf import settings
+import os
 
 @csrf_exempt
 def register(request):
@@ -51,7 +54,16 @@ def register(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
     
-    return render(request, "register.html")
+
+    json_file_path = os.path.join(settings.BASE_DIR, 'static/json/kota.json')
+
+    with open(json_file_path, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+        cities = [item['text'] for item in data['result']]
+        context = {
+            'cities': cities
+        }
+    return render(request, "register.html", context)
 
 
 from django.shortcuts import render
@@ -77,7 +89,6 @@ def login(request):
                     # Redirect to a success page.
                     request.session['username'] = username
                     request.session['user_id'] = user.id
-                    request.session['domisili'] = user.domisili
                     
                     return JsonResponse({
                     "status": True,
