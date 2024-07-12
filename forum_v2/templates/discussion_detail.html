@@ -20,7 +20,7 @@
                     <p class="text-gray-700 text-base">{{discussion.body}}</p>
                 </div>
                 <!-- Comment Section -->
-                <form class="mb-6" action="{% url 'forum:add_comment' discussion.id %}" method="POST">
+                <form class="mb-6" action="{% url 'forum_v2:add_comment_v2' discussion.id %}" method="POST">
                     {% csrf_token %}
                     <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
                         <label for="body" class="sr-only">Your comment</label>
@@ -54,7 +54,7 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                     </svg>
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menghapus diskusi ini?</h3>
-                    <form action="{% url 'forum:delete_discussion' discussion.id %}" method="POST">
+                    <form action="{% url 'forum_v2:delete_discussion_v2' discussion.id %}" method="POST">
                         {% csrf_token %}
                         <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                             Ya, hapus
