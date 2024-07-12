@@ -11,7 +11,6 @@ class ChatMessage(admin.TabularInline):
     model = ChatMessage
 
 
-
 class ThreadAdmin(admin.ModelAdmin):
     inlines = [ChatMessage]
     class Meta:
