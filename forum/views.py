@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 # Create your views here.
 
@@ -12,7 +12,9 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.views.decorators.csrf import csrf_exempt
 
+from authentication.models import RegisteredUser
 from forum.models import Discussion, Comment
+from django.contrib.auth.models import User
 
 def get_all_discussion(request):
     discussion = Discussion.objects.all()
@@ -53,8 +55,8 @@ def get_detail_discussion(request, id):
         }
 
         comments = [
-            {
-                "user": comment.name.user.username,
+            {   "discussion_id":comment.post.id,
+                "user": comment.user_commenting.user.username,
                 "body": comment.body,
                 "date_added": comment.date_added,
             }
@@ -65,38 +67,62 @@ def get_detail_discussion(request, id):
             'discussion': discussion,
             'comments': comments
         }
-
-        return JsonResponse(context)
+        # return JsonResponse(context)
+        return render(request,'discussion_detail.html',context)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
 
+@csrf_exempt
+def add_comment(request, id):
+    if request.method == "POST":
+        try: 
+            user = request.user
+            registered_user = get_object_or_404(RegisteredUser, user=user)
+            body = request.POST.get('body')
+            discussion = get_object_or_404(Discussion, id=id)
+            comment = Comment.objects.create(post=discussion, user_commenting=registered_user, body=body)
+            # return JsonResponse({
+            #     "status": "success",
+            #     "comment": {
+            #         "user": registered_user.user.username,
+            #         "body": body,
+            #         "date_added": comment.date_added.strftime('%B %d, %Y')
+            #     }
+            # })
+            return redirect('forum:get_discussion_by_id', id=id)
+        except Exception as e:
+            return JsonResponse({"status": str(e)})
+    return JsonResponse({"status": "error" }, status=400)
 
 
-# @csrf_exempt
-# def add_discussion(request):
-#     discussion = Discussion.objects.all()
-#     if request.method == "POST":
-#         username = request.user
-#         date_user = datetime.date.today()
-#         title_user = request.POST.get('title')
-#         body_user = request.POST.get('body')
 
-#         new_discussion = discussion(user=username, date=date_user, title=title_user,body=body_user)
-#         new_discussion.save()
-#         return JsonResponse({
-#             "pk" : new_discussion.pk,
-#             "fields" : {
-#                 "user" : { 
-#                         "username" : new_discussion.user.username
-#                         },
-               
-#                 "date" : new_discussion.date,
-#                 "title" : new_discussion.title,
-#                 "body" : new_discussion.body,
+@csrf_exempt
+def add_discussion(request):
+    if request.method == "POST":
+        try: 
+            user = request.user
+            registered_user = get_object_or_404(RegisteredUser, user=user)
+            title = request.POST.get('title')
+            body = request.POST.get('body')
+            new_discussion = Discussion.objects.create(user=registered_user, title=title, body=body)
+
+            return JsonResponse({
+                "pk" : new_discussion.pk,
+                "fields" : {
+                    "user" : { 
+                            "username" : new_discussion.user.user.username
+                            },
                 
-#             }
-#         })
-#     return JsonResponse({"instance": "gagal Dibuat"}, status=400)
+                    "date" : new_discussion.date,
+                    "title" : new_discussion.title,
+                    "body" : new_discussion.body,
+                    
+            }
+        })
+
+        except Exception as e:
+            return JsonResponse({"status": str(e)})
+    return JsonResponse({"instance": "gagal Dibuat"}, status=400)
 
 
 
@@ -123,29 +149,6 @@ def get_detail_discussion(request, id):
 #             }
 #         })
 #     return JsonResponse(data, safe=False)
-
-# def get_comments_json(request):
-#     dataa = []
-#     comments = Comment.objects.all()
-    
-#     for item in comments:
-#         dataa.append({
-#             "pk" : item.pk,
-#             "fields" : {
-#                 "name" : { 
-#                         "username" : item.name.username,
-#                         "name"     : item.name.name,
-#                         "role"     : item.name.role
-#                         },
-#                 "discussion":{
-#                     "pk":item.discussion.pk
-#                 },
-#                 "date_added" : item.date_added,
-#                 "body" : item.body,
-                
-#             }
-#         })
-#     return JsonResponse(dataa, safe=False)
 
 
 

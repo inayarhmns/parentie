@@ -6,7 +6,7 @@ from authentication.models import RegisteredUser
 class Discussion(models.Model):
     user = models.ForeignKey(RegisteredUser, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add = True)
-    title = models.CharField(max_length=250, unique=True)
+    title = models.CharField(max_length=250)
     body = models.TextField(blank=True)
 
 class Comment(models.Model):
