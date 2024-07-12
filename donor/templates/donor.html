@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block meta %}
-
+<head>
     <title>Donor</title>
-    
+</head>
 {% endblock meta %}
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -49,7 +49,7 @@
                     </div>
                 {% endif %}
                     </div>
-                    <h2 class="text-xl font-bold text-gray-800">{{ donor.user.nama }}</h2>
+                    <h2 class="text-xl font-bold text-gray-800">{{ donor.user.nama|title }}</h2>
                     <p class="text-sm text-gray-600">{{ donor.timestamp }}</p>
                     <div class="grid grid-cols-4 justify-end gap-4">
                         <div class="col-span-3 mt-2">
@@ -62,7 +62,7 @@
                                 <p class="text-sm text-gray-600">Golongan darah: {{ donor.user.golongan_darah|default:'-' }} </p>
                             {% endif %}
                         </div>
-                        <button type="submit" data-user-id="{{ donor.user.id }}" class="h-min col-span-1 mt-2 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-bold text-pr-black bg-blue-gradient hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 start-chat-btn">
+                        <button type="submit" data-user-id="{{ donor.user.id }}" class="h-min col-span-1 mt-2 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-blue-gradient hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 start-chat-btn">
                             Konsultasi
                         </button> 
                         </div>

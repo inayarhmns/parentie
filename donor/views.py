@@ -37,11 +37,21 @@ def get_all_donors(request):
     else:
         donors = Donor.objects.filter(selesai=False).exclude(user=registered_user)
 
+    latest = []
+    distinct = donors.values("user").distinct()
+    latest = []
+    for i in distinct:
+        userid = i['user']
+        user = RegisteredUser.objects.get(id=userid)
+        newest = donors.filter(user=user).order_by('timestamp').last()
+        latest.append(newest)
+
+
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        html = render_to_string('donor_cards.html', {'donors': donors[::-1]})
+        html = render_to_string('donor_cards.html', {'donors': latest})
         return JsonResponse({'html': html})
 
-    return render(request, 'donor.html', {'donors': donors[::-1], 'tag_filter': tag_filter, 'domisili_filter': domisili_filter, 'cities': cities})
+    return render(request, 'donor.html', {'donors': latest, 'tag_filter': tag_filter, 'domisili_filter': domisili_filter, 'cities': cities})
 
 
 @csrf_exempt

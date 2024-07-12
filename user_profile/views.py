@@ -11,7 +11,10 @@ from django.http import JsonResponse
 def get_profile(request):
     username = request.session.get("username")
     registered_user = RegisteredUser.objects.get(user__username=username)
-    history = Donor.objects.filter(user__user__username=username)[::-1]
+    history = Donor.objects.filter(user__user__username=username).order_by('-timestamp')
+
+    # Check if all donor requests are marked as "selesai"
+    all_selesai = all(donor.selesai for donor in history)
 
     if history:
         status = history[0].tag
@@ -19,7 +22,12 @@ def get_profile(request):
     else:
         status = None
 
-    return render(request, "profile.html", {'user': registered_user, 'history': history, 'status': status})
+    return render(request, "profile.html", {
+        'user': registered_user,
+        'history': history,
+        'status': status,
+        'all_selesai': all_selesai
+    })
 
 @csrf_exempt
 def butuh_asi(request):
