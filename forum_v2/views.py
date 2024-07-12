@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.timezone import make_aware
-from django.utils.dateparse import parse_datetime
+from datetime import datetime
 
 
 
@@ -32,8 +32,8 @@ def get_all_discussion(request):
     data = []
     data_event = []
 
-    print(query)
-    print(query_event)
+    # print(query)
+    # print(query_event)
 
 
     if query:
@@ -92,7 +92,8 @@ def get_all_discussion(request):
                     "judul": item.judul,
                     "penyelenggara": item.penyelenggara,
                     "detail": item.detail,
-                    # "tanggal": item.tanggal_waktu_mulai,
+                    "tanggal_mulai": item.tanggal_mulai,
+                    "waktu_mulai": item.waktu_mulai,
                     "lokasi": item.lokasi
             }
         })
@@ -262,8 +263,9 @@ def event(request, id):
         context["id_logged_in"] = id_logged_in
         print(context["id_logged_in"])
     else:
-        context["id_logged_in"] = ""
-    return render(request, 'detail_event.html', context)
+        context["id_logged_in"] = None
+
+    return render(request, 'detail_event.html', context=context)
 
 
 def events(request):
@@ -290,36 +292,28 @@ def get_detail_event(id):
 
     
 @csrf_exempt
-def create_detail_event(request, id):
+def create_detail_event(request):
     try:
         if(request.method == "POST"):
-            user = request.POST.get('user')
+            user = request.user
+            registered_user = get_object_or_404(RegisteredUser, user=user)
             judul = request.POST.get('judul')
             detail = request.POST.get('detail')
             penyelenggara = request.POST.get('penyelenggara')
             lokasi = request.POST.get('lokasi')
-            # tanggal_waktu_mulai = request.POST.get('tanggal_waktu_mulai')
-            # tanggal_waktu_selesai = request.POST.get('tanggal_waktu_selesai')
+            tanggal_mulai = request.POST.get('tanggal_mulai')
+            tanggal_selesai = request.POST.get('tanggal_selesai')
             waktu_mulai = request.POST.get('waktu_mulai')
             waktu_selesai = request.POST.get('waktu_selesai')
-            link_event = request.POST.get('link_event')
-            nama_contact_person = request.POST.get('nama_contact_person')
-            nomor_contact_person = request.POST.get('nomor_contact_person')
+            link_event = request.POST.get('link')
+            nama_contact_person = request.POST.get('nama_cp')
+            nomor_contact_person = request.POST.get('nomor_cp')
 
-            # mulai = datetime.datetime.strptime(tanggal_waktu_mulai + ' ' + waktu_mulai, "%m/%d/%Y %H:%M")
-            # selesai = datetime.datetime.strptime(tanggal_waktu_selesai + ' ' + waktu_selesai, "%m/%d/%Y %H:%M")
-            print("mulai & selesai")
-            print(mulai)
-            print(selesai)
-            
-            mulai_aware = make_aware(mulai)
-            selesai_aware = make_aware(selesai)
-
-            event = Event(user, judul,detail, penyelenggara, lokasi, mulai_aware, selesai_aware, link_event, nama_contact_person, nomor_contact_person)
-            event.save()
-
-            return JsonResponse({"success": "Event added successfully"}, status=200)
-    except:
+            Event.objects.create(user=registered_user, judul=judul, detail=detail, penyelenggara=penyelenggara, lokasi=lokasi, tanggal_mulai=tanggal_mulai, tanggal_selesai=tanggal_selesai, waktu_mulai=waktu_mulai, waktu_selesai=waktu_selesai, link_event=link_event, nama_contact_person=nama_contact_person, nomor_contact_person=nomor_contact_person)
+        return redirect('discussion_v2')
+        
+    except Exception as e:
+        print(e)
         return JsonResponse({"error": "Error adding data"}, status=500)
 
     
@@ -333,32 +327,36 @@ def update_detail_event(request, id):
             if not event:
                 return JsonResponse({"error": "Event not found"}, status=404)
 
-
             event.judul = body['judul']
-            print(event.judul) 
             event.detail = body['detail']  
             event.penyelenggara = body['penyelenggara']  
             event.lokasi = body['lokasi']  
             event.link_event = body['link']  
-            event.nama_contact_person = body['nama_cp']  
-            event.nomor_contact_person = body['nomor_cp'] 
-
-            print(event) 
-
+            event.nama_contact_person = body['nama_cp'] 
+            event.nomor_contact_person = body['nomor_cp']
+            tanggal_mulai = body['tanggal_mulai'] 
+            day, month, year = tanggal_mulai.split("/")
+            formatted_date_mulai = f"{year}-{day}-{month}"
+            event.tanggal_mulai = formatted_date_mulai
+            tanggal_selesai = body['tanggal_selesai']
+            day, month, year = tanggal_selesai.split("/")
+            formatted_date_selesai = f"{year}-{day}-{month}"
+            event.tanggal_selesai = formatted_date_selesai
+            event.waktu_mulai = body['waktu_mulai'] 
+            event.waktu_selesai = body['waktu_selesai'] 
+            
             event.save()
 
-
-
-
-            # Assuming success response
             response_data = {'message': 'Event updated successfully!'}
             return JsonResponse(response_data, status=200)
         
         except json.JSONDecodeError as e:
             # JSON decoding error
+            
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         
         except Exception as e:
+            print(e)
             # Handle other exceptions
             return JsonResponse({'error': str(e)}, status=500)
 
@@ -426,7 +424,7 @@ def delete_detail_event(request, id):
     try:
         data = Event.objects.filter(id=id)
         data.delete()
-        return JsonResponse({"success": "Event deleted successfully"}, status=200)
+        return JsonResponse({'status': 'success', 'redirect_url': reverse('discussion_v2')})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500) 
 

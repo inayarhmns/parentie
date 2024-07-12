@@ -60,11 +60,8 @@ def login(request):
                     request.session['username'] = username
                     request.session['user_id'] = user.id
                     
-                    return JsonResponse({
-                    "status": True,
-                    "message": "Successfully Logged In!",
-                    "session": get_session(request),
-                    }, status=200)
+                    return redirect('home')
+
                 else:
                     return JsonResponse({
                     "status": False,
