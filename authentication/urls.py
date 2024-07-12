@@ -5,6 +5,6 @@ app_name = 'auth'
 
 urlpatterns = [
     path('register', register, name='register'),
-    path('login', login, name='login'),
+    path('login', login, name='auth_login'),
     path('logout', user_logout, name='logout'),
 ]

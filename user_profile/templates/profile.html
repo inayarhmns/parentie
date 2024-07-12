@@ -6,47 +6,47 @@
 {% block content %}
 <div class="flex items-center justify-center min-h-screen" style="background-color: #F4FEFF;">
     <div class="container mx-auto max-w-4xl mt-20">
-        <h1 class="text-center text-3xl font-bold mb-10">Halo, {{ user.user.username|title }}!</h1>
+        <h1 class="text-center text-3xl font-bold mb-10">Halo, {{ regis.user.username|title }}!</h1>
 
         <div class="grid grid-cols-2 gap-6">
             <div class="max-w-sm rounded overflow-hidden shadow-lg">
                 <div class="px-6 py-4">
                     <div class="flex justify-between items-center mb-2">
-                        <div class="font-bold text-xl">{{ user.nama|title }}</div>
+                        <div class="font-bold text-xl">{{ regis.nama|title }}</div>
                     </div>
                     <div class="mb-2">
                         <label>Peran</label>
-                        <input type="text" value="{{ user.peran }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        <input type="text" value="{{ regis.peran }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         <label>Domisili</label>
-                        <input type="text" value="{{ user.domisili }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        <input type="text" value="{{ regis.domisili }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         <label>Agama</label>
-                        <input type="text" value="{{ user.agama }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        <input type="text" value="{{ regis.agama }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
 
-                        {% if user.umur %}
+                        {% if regis.umur %}
                             <label>Umur</label>
-                            <input type="text" value="{{ user.umur }} tahun" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                            <input type="text" value="{{ regis.umur }} tahun" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         {% endif %}
 
-                        {% if user.golongan_darah %}
+                        {% if regis.golongan_darah %}
                             <label>Golongan Darah</label>
-                            <input type="text" value="{{ user.golongan_darah }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                            <input type="text" value="{{ regis.golongan_darah }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         {% endif %}
 
-                        {% if user.kondisi_ibu %}
+                        {% if regis.kondisi_ibu %}
                             <label>Kondisi Ibu</label>
-                            <input type="text" value="{{ user.kondisi_ibu }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                            <input type="text" value="{{ regis.kondisi_ibu }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         {% endif %}
-                        {% if user.umur_kehamilan %}
+                        {% if regis.umur_kehamilan %}
                             <label>Umur Kehamilan</label>
-                            <input type="text" value="{{ user.umur_kehamilan }} minggu" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                            <input type="text" value="{{ regis.umur_kehamilan }} minggu" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         {% endif %}
-                        {% if user.umur_bayi %}
+                        {% if regis.umur_bayi %}
                             <label>Umur Bayi</label>
-                            <input type="text" value="{{ user.umur_bayi }} bulan" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                            <input type="text" value="{{ regis.umur_bayi }} bulan" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         {% endif %}
-                        {% if user.jenis_kelamin %}
+                        {% if regis.jenis_kelamin %}
                             <label>Jenis Kelamin Bayi</label>
-                            <input type="text" value="{{ user.jenis_kelamin }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                            <input type="text" value="{{ regis.jenis_kelamin }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
                         {% endif %}
                     </div>
                     {% if all_selesai %}

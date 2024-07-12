@@ -9,9 +9,10 @@ from django.http import JsonResponse
 # Create your views here.
 @login_required(login_url='/auth/login')
 def get_profile(request):
-    username = request.session.get("username")
-    registered_user = RegisteredUser.objects.get(user__username=username)
-    history = Donor.objects.filter(user__user__username=username).order_by('-timestamp')
+    # username = request.session.get("username")
+    # registered_user = RegisteredUser.objects.get(user__username=username)
+    registered_user = get_object_or_404(RegisteredUser, user=request.user)
+    history = Donor.objects.filter(user=registered_user).order_by('-timestamp')
 
     # Check if all donor requests are marked as "selesai"
     all_selesai = all(donor.selesai for donor in history)
@@ -23,7 +24,7 @@ def get_profile(request):
         status = None
 
     return render(request, "profile.html", {
-        'user': registered_user,
+        'regis': registered_user,
         'history': history,
         'status': status,
         'all_selesai': all_selesai

@@ -22,8 +22,9 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('chat/', include('chat.urls')),
 
-    path('forum/', include('forum.urls')),
+    path('', include('forum_v2.urls')),
     path('donor/', include('donor.urls')),
     path('user_profile/', include('user_profile.urls')),
+
     
 ]

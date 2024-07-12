@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'authentication',
-    'forum',
+    'forum_v2',
     'chat',
     'channels',
     'donor',
@@ -71,7 +71,7 @@ CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
 
 ROOT_URLCONF = 'parentie.urls'
-
+# LOGIN_URL = 'auth_login'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
