@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block meta %}
+    <title>Profil</title>
+{% endblock meta %}
+{% block content %}
+<div class="flex items-center justify-center min-h-screen" style="background-color: #F4FEFF;">
+    <h1>{{username}}</h1>
+    <div class="container mx-auto max-w-md shadow-md rounded-lg overflow-hidden mt-20 mb-20">
+        <form id="filter-form" action="" method="get" class="mb-4">
+            <label for="tag" class="block text-sm font-medium text-gray-700">Filter</label>
+            <div class="mt-1 relative">
+                <select id="tag" name="tag" class="block appearance-none w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="">Semua</option>
+                    <option value="butuh" {% if tag_filter == 'butuh' %}selected{% endif %}>Butuh ASI</option>
+                    <option value="donor" {% if tag_filter == 'donor' %}selected{% endif %}>Donor ASI</option>
+                </select>
+            </div>
+            <button type="submit" class="mt-2 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Apply Filter
+            </button>
+        </form>
+        <div class="grid grid-cols-1 gap-4">
+            {% for donor in donors %}
+                <div class="relative bg-white p-6 rounded-lg shadow-md">
+                    <div class="absolute top-0 right-0">
+                        {% if donor.tag == 'butuh' %}
+                            <div class="bg-pink-500 text-white py-1 px-3 rounded-full">
+                                <p class="text-xs">BUTUH ASI</p>
+                            </div>
+                        {% elif donor.tag == 'donor' %}
+                            <div class="bg-blue-500 text-white py-1 px-3 rounded-full">
+                                <p class="text-xs">DONOR ASI</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">{{ donor.user.nama }}</h2>
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">{{ donor.user.domisili }}</h2>
+                    <p class="text-sm text-gray-600">{{ donor.timestamp }}</p>
+                    <div class="mt-4">
+                        {% if donor.tag == 'butuh' %}
+                            <p class="text-sm text-gray-600">Usia bayi: {{ donor.user.umur_bayi|default:'-' }} minggu </p>
+                            <p class="text-sm text-gray-600">Jenis kelamin bayi: {{ donor.user.jenis_kelamin|default:'-' }}</p>
+                        {% elif donor.tag == 'donor' %}
+                            <p class="text-sm text-gray-600">Agama: {{ donor.user.agama|default:'-' }} </p>
+                            <p class="text-sm text-gray-600">Usia: {{ donor.user.umur|default:'-' }} tahun </p>
+                            <p class="text-sm text-gray-600">Golongan darah: {{ donor.user.golongan_darah|default:'-' }} </p>
+                        {% endif %}
+                        
+                    </div>
+                    
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>                
+<script>
+    $(document).ready(function() {
+        $('#tag').change(function() {
+            $.ajax({
+                url: $('#filter-form').attr('action'),
+                data: $('#filter-form').serialize(),
+                success: function(data) {
+                    $('#donor-cards').html(data.html);
+                }
+            });
+        });
+    });
+</script>
+{% endblock content %}                

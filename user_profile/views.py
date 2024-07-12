@@ -3,5 +3,6 @@ from authentication.models import RegisteredUser
 
 # Create your views here.
 def get_profile(request):
-    return
+    username = request.session.get("username")
+    return render(request, "profile.html", {'username': username})
     # return RegisteredUser.objects.filter(username ==- request.session.get("username"))
