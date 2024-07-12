@@ -16,9 +16,7 @@ from forum.models import Discussion, Comment
 
 def get_all_discussion(request):
     discussion = Discussion.objects.all()
-    # context={
-    #     'post_item':discussion,
-    # }
+
     data = []
     
     for item in discussion:
@@ -26,7 +24,7 @@ def get_all_discussion(request):
             "pk" : item.pk,
             "fields" : {
                 "user" : { 
-                        "username" : item.user.username,
+                        "username" : item.user.user.username
                         },
                
                 "date" : item.date,
@@ -34,34 +32,71 @@ def get_all_discussion(request):
                 "body" : item.body,             
             }
         })
-    return JsonResponse(data, safe=False)
-    # return render(request,'discussion.html',context)
 
-@csrf_exempt
-def add_discussion(request):
-    discussion = Discussion.objects.all()
-    if request.method == "POST":
-        username = request.user
-        date_user = datetime.date.today()
-        title_user = request.POST.get('title')
-        body_user = request.POST.get('body')
+    context={
+        'discussion_item':data,
+    }
+    # return JsonResponse(data, safe=False)
+    return render(request,'discussion.html',context)
 
-        new_discussion = discussion(user=username, date=date_user, title=title_user,body=body_user)
-        new_discussion.save()
-        return JsonResponse({
-            "pk" : new_discussion.pk,
-            "fields" : {
-                "user" : { 
-                        "username" : new_discussion.user.username
-                        },
-               
-                "date" : new_discussion.date,
-                "title" : new_discussion.title,
-                "body" : new_discussion.body,
-                
+def get_detail_discussion(request, id):
+    try:
+        discussion_by_id = Discussion.objects.get(id=id)
+        comment_by_discussion = discussion_by_id.comment.all()
+
+        discussion = {
+            "id": discussion_by_id.pk,
+            "user": discussion_by_id.user.user.username,
+            "body": discussion_by_id.body,
+            "date": discussion_by_id.date,
+            "title": discussion_by_id.title,
+        }
+
+        comments = [
+            {
+                "user": comment.name.user.username,
+                "body": comment.body,
+                "date_added": comment.date_added,
             }
-        })
-    return JsonResponse({"instance": "gagal Dibuat"}, status=400)
+            for comment in comment_by_discussion
+        ]
+
+        context = {
+            'discussion': discussion,
+            'comments': comments
+        }
+
+        return JsonResponse(context)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+
+
+# @csrf_exempt
+# def add_discussion(request):
+#     discussion = Discussion.objects.all()
+#     if request.method == "POST":
+#         username = request.user
+#         date_user = datetime.date.today()
+#         title_user = request.POST.get('title')
+#         body_user = request.POST.get('body')
+
+#         new_discussion = discussion(user=username, date=date_user, title=title_user,body=body_user)
+#         new_discussion.save()
+#         return JsonResponse({
+#             "pk" : new_discussion.pk,
+#             "fields" : {
+#                 "user" : { 
+#                         "username" : new_discussion.user.username
+#                         },
+               
+#                 "date" : new_discussion.date,
+#                 "title" : new_discussion.title,
+#                 "body" : new_discussion.body,
+                
+#             }
+#         })
+#     return JsonResponse({"instance": "gagal Dibuat"}, status=400)
 
 
 
