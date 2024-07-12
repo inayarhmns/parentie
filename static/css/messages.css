@@ -270,3 +270,30 @@ html {
 .messages-wrapper{
   height: 100%;
 }
+
+.chat-content {
+    display: none;
+}
+.chat-content.is_active {
+    display: block;
+ 
+}
+.default-message {
+    display: none;
+    
+}
+.default-message.is_active {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    font-size: larger;
+    color: #F4FEFF;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.text-medium{
+    font-size: small;
+}
