@@ -9,6 +9,8 @@ from django.http import JsonResponse
 from authentication.models import User
 from chat.models import Thread
 from authentication.models import RegisteredUser
+from django.db.models import Q
+
 # Create your views here.
 
 @login_required(login_url='/auth/login')
@@ -32,31 +34,36 @@ def get_all_donors(request):
 @csrf_exempt
 @login_required
 def start_chat(request):
-    print("asfg")
     if request.method == 'POST':
-        print("halo")
         data = json.loads(request.body)
         target_user_id = data.get('target_user_id')
+        
         try:
-            # print(RegisteredUser.objects.get(id=target_user_id).user)
-
-            # print(User.objects.all())
-            # target_user = User.objects.get(id=target_user_id)
             target_user = RegisteredUser.objects.get(id=target_user_id).user
-            print(target_user)
             current_user = request.user
 
-            # Ensure a thread exists only between the two users
-            thread, created = Thread.objects.get_or_create(
-                first_person=current_user,
-                second_person=target_user
-            )
+            # Attempt to find an existing thread between the users
+            thread = Thread.objects.filter(
+                Q(first_person=current_user, second_person=target_user) |
+                Q(first_person=target_user, second_person=current_user)
+            ).first()
+
+            # If no thread exists, create a new one
+            if not thread:
+                thread = Thread.objects.create(
+                    first_person=current_user,
+                    second_person=target_user
+                )
 
             return JsonResponse({
                 'success': True,
                 'thread_id': thread.id
             })
-        except User.DoesNotExist:
-            print("user does not exist")
+        
+        except RegisteredUser.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'User does not exist'}, status=404)
+        
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
