@@ -66,7 +66,8 @@ def get_detail_discussion(request, id):
         }
 
         comments = [
-            {   "discussion_id":comment.post.id,
+            {   "id" : comment.pk,
+                "discussion_id":comment.post.id,
                 "user": comment.user_commenting.user.username,
                 "body": comment.body,
                 "date_added": comment.date_added,
