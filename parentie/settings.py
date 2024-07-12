@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'authentication',
     'forum',
-    'donor'
+    'donor',
+    'user_profile'
 ]
 
 MIDDLEWARE = [

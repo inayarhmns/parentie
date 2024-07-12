@@ -28,8 +28,8 @@
                     <label for="peran" class="block mb-2 text-sm font-medium text-gray-900">Peran</label>
                     <div class="relative">
                         <select id="peran" name="peran" class="block appearance-none w-full bg-white border border-gray-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="ayah">Ayah</option>
-                            <option value="ibu">Ibu</option>
+                            <option value="Ayah">Ayah</option>
+                            <option value="Ibu">Ibu</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -58,13 +58,13 @@
                     <label for="agama" class="block mb-2 text-sm font-medium text-gray-900">Agama</label>
                     <div class="relative">
                         <select id="agama" name="agama" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="islam">Islam</option>
-                            <option value="kristen">Kristen</option>
-                            <option value="katolik">Katolik</option>
-                            <option value="hindu">Hindu</option>
-                            <option value="buddha">Buddha</option>
-                            <option value="khonghucu">Khonghucu</option>
-                            <option value="rahasia">Rahasia</option>
+                            <option value="Islam">Islam</option>
+                            <option value="Kristen">Kristen</option>
+                            <option value="Katolik">Katolik</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Buddha">Buddha</option>
+                            <option value="Khonghucu">Khonghucu</option>
+                            <option value="-">Memilih tidak menyebutkan</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -96,12 +96,11 @@
                 </div>
 
                 <div id="kondisi_ibu" class="hidden mb-4">
-                    <label for="kondisi" class="block mb-2 text-sm font-medium text-gray-900">Kondisi Ibu</label>
+                    <label for="kondisi_ibu" class="block mb-2 text-sm font-medium text-gray-900">Kondisi Ibu</label>
                     <div class="relative">
                         <select id="kondisi_ibu" name="kondisi_ibu" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option value="hamil">Hamil</option>
                             <option value="menyusui">Menyusui</option>
-                            <option value="keduanya">Keduanya</option>
                             <option value="tidak">Tidak Keduanya</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -127,8 +126,8 @@
                     <label for="jenis-kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis Kelamin Bayi</label>
                     <div class="relative">
                         <select id="jenis-kelamin" name="jenis-kelamin" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="laki-laki">Laki-laki</option>
-                            <option value="perempuan">Perempuan</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -150,87 +149,72 @@
     </div>
 </div>                
 <script>
-    const dropdownButton = document.getElementById('dropdown-button');
-        const dropdownMenu = document.getElementById('dropdown-menu');
-        const searchInput = document.getElementById('search-input');
-        let isOpen = false; // Set to true to open the dropdown by default
-        
-        // Function to toggle the dropdown state
-        function toggleDropdown() {
-          isOpen = !isOpen;
-          dropdownMenu.classList.toggle('hidden', !isOpen);
-        }
-        
-        // Set initial state
-        toggleDropdown();
-        
-        dropdownButton.addEventListener('click', () => {
-          toggleDropdown();
-        });
-        
-        // Add event listener to filter items based on input
-        searchInput.addEventListener('input', () => {
-          const searchTerm = searchInput.value.toLowerCase();
-          const items = dropdownMenu.querySelectorAll('a');
-        
-          items.forEach((item) => {
-            const text = item.textContent.toLowerCase();
-            if (text.includes(searchTerm)) {
-              item.style.display = 'block';
-            } else {
-              item.style.display = 'none';
-            }
-          });
-        });
-
     document.addEventListener('DOMContentLoaded', function() {
             const peran = document.getElementById('peran');
             const umur = document.getElementById('umur');
             const goldar = document.getElementById('golongan_darah');
-            const kondisi = document.getElementById('kondisi');
+            const kondisi = document.getElementById('kondisi_ibu');
             const umurKehamilan = document.getElementById('umur-kehamilan');
             const umurBayi = document.getElementById('umur-bayi');
             const jenisKelamin = document.getElementById('jenis-kelamin');
 
+            // peran.addEventListener('change', function() {
+            //     const selectedValue = this.value;
+
+            //     if (selectedValue === 'Ibu') {
+            //         umur.classList.remove('hidden');
+            //         goldar.classList.remove('hidden');
+            //         kondisi.classList.remove('hidden');
+            //         umurBayi.classList.add('hidden');
+            //         jenisKelamin.classList.add('hidden');
+            //         umurKehamilan.classList.remove('hidden');
+
+            //     } else {
+            //         umur.classList.add('hidden');
+            //         goldar.classList.add('hidden');
+            //         kondisi.classList.add('hidden');
+            //         umurKehamilan.classList.add('hidden');
+            //         umurBayi.classList.remove('hidden');
+            //         jenisKelamin.classList.remove('hidden');
+            //     }
+            // });
+
+            // kondisi.addEventListener('change', function() {
+            //     const selectedValue = this.value;
+
+            //     if (selectedValue === 'hamil') {
+            //         umurKehamilan.classList.remove('hidden');
+            //         umurBayi.classList.add('hidden');
+            //         jenisKelamin.classList.add('hidden');
+            //     } else if (selectedValue === 'menyusui') {
+            //         umurBayi.classList.remove('hidden');
+            //         jenisKelamin.classList.remove('hidden');
+            //         umurKehamilan.classList.add('hidden');
+            //     } else {
+            //         umurKehamilan.classList.add('hidden');
+            //         umurBayi.classList.add('hidden');
+            //         jenisKelamin.classList.add('hidden');
+            //     }
+            // });
             peran.addEventListener('change', function() {
-                const selectedValue = this.value;
+            const selectedValue = this.value;
 
-                if (selectedValue === 'ibu') {
-                    umur.classList.remove('hidden');
-                    goldar.classList.remove('hidden');
-                    kondisi.classList.remove('hidden');
-                    umurBayi.classList.add('hidden');
-                    jenisKelamin.classList.add('hidden');
-                    umurKehamilan.classList.remove('hidden');
-
-                } else {
-                    umur.classList.add('hidden');
-                    goldar.classList.add('hidden');
-                    kondisi.classList.add('hidden');
-                    umurKehamilan.classList.add('hidden');
-                    umurBayi.classList.remove('hidden');
-                    jenisKelamin.classList.remove('hidden');
-                }
-            });
-
-            kondisi.addEventListener('change', function() {
-                const selectedValue = this.value;
-
-                if (selectedValue === 'hamil') {
-                    umurKehamilan.classList.remove('hidden');
-                    umurBayi.classList.add('hidden');
-                    jenisKelamin.classList.add('hidden');
-                } else if (selectedValue === 'menyusui') {
-                    umurBayi.classList.remove('hidden');
-                    jenisKelamin.classList.remove('hidden');
-                    umurKehamilan.classList.add('hidden');
-                } else {
-                    umurKehamilan.classList.add('hidden');
-                    umurBayi.classList.remove('hidden');
-                    jenisKelamin.classList.remove('hidden');
-                }
-            });
+            umur.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            goldar.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            kondisi.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            umurKehamilan.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
+            umurBayi.style.display = selectedValue === 'Ayah' ? 'block' : 'none';
+            jenisKelamin.style.display = selectedValue === 'Ayah' ? 'block' : 'none';
         });
+
+        kondisi.addEventListener('change', function() {
+            const selectedValue = this.value;
+
+            umurKehamilan.style.display = selectedValue === 'hamil' ? 'block' : 'none';
+            umurBayi.style.display = selectedValue === 'menyusui' ? 'block' : 'none';
+            jenisKelamin.style.display = selectedValue === 'menyusui' ? 'block' : 'none';
+        });
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
     const dropdownMenu = document.getElementById('dropdown-menu');
