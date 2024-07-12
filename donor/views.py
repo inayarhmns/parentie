@@ -29,8 +29,6 @@ def get_all_donors(request):
     return render(request, 'donor.html', {'donors': donors, 'tag_filter': tag_filter})
 
 
-
-
 @csrf_exempt
 @login_required
 def start_chat(request):
