@@ -18,26 +18,27 @@
                 </div>
                 <div>
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-                    <input type="password" id="password" name="password" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Username" required>
+                    <input type="password" id="password" name="password" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="••••••••" required>
                 </div>
                 <div>
                     <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama Lengkap</label>
-                    <input type="text" id="nama" name="nama" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Username" required>
+                    <input type="text" id="nama" name="nama" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Nama Lengkap" required>
                 </div>
                 <div class="mb-4">
                     <label for="peran" class="block mb-2 text-sm font-medium text-gray-900">Peran</label>
                     <div class="relative">
-                        <select id="peran" name="peran" class="block appearance-none w-full bg-white border border-gray-300 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <select id="peran" name="peran" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option value="Ayah">Ayah</option>
                             <option value="Ibu">Ibu</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <svg class="fill-current h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
                             </svg>
                         </div>
                     </div>
                 </div>
+                
 
                 <div class="mb-4">
                     <label for="domisili" class="block mb-2 text-sm font-medium text-gray-900">Domisili</label>
@@ -73,15 +74,15 @@
                         </div>
                     </div>
                 </div>
-                <div id="umur" class="hidden mb-4">
+                <div id="umur" class="mb-4">
                     <label for="umur" class="block mb-2 text-sm font-medium text-gray-900">Umur</label>
-                    <input type="number" id="umur" name="umur" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur">
+                    <input type="number" id="umur" name="umur" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur" required>
                 </div>
 
-                <div id="golongan_darah" class="hidden mb-4">
-                    <label for="golongan_darah" class="block mb-2 text-sm font-medium text-gray-900">Golongan Darah</label>
+                <div class="mb-4">
+                    <label for="golongan-darah" class="block mb-2 text-sm font-medium text-gray-900">Golongan Darah</label>
                     <div class="relative">
-                        <select id="golongan_darah" name="golongan_darah" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <select id="golongan-darah" name="golongan-darah" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="AB">AB</option>
@@ -95,37 +96,35 @@
                     </div>
                 </div>
 
-                <div id="kondisi_ibu" class="hidden mb-4">
-                    <label for="kondisi_ibu" class="block mb-2 text-sm font-medium text-gray-900">Kondisi Ibu</label>
+                <div class="mb-4">
+                    <label for="kondisi-ibu" class="block mb-2 text-sm font-medium text-gray-900">Kondisi Ibu</label>
                     <div class="relative">
-                        <select id="kondisi_ibu" name="kondisi_ibu" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="hamil">Hamil</option>
-                            <option value="menyusui">Menyusui</option>
-                            <option value="tidak">Tidak Keduanya</option>
+                        <select id="kondisi-ibu" name="kondisi-ibu" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="Hamil">Hamil</option>
+                            <option value="Menyusui">Menyusui</option>
+                            <option value="Tidak">Tidak keduanya</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.
-                                7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
+                                <path d="M5.29289 7.29289C5.68342 6.90237 6.31658 6.90237 6.70711 7.29289L10 10.5858L13.2929 7.29289C13.6834 6.90237 14.3166 6.90237 14.7071 7.29289C15.0976 7.68342 15.0976 8.31658 14.7071 8.70711L10.7071 12.7071C10.3166 13.0976 9.68342 13.0976 9.29289 12.7071L5.29289 8.70711C4.90237 8.31658 4.90237 7.68342 5.29289 7.29289Z" />
                             </svg>
                         </div>
                     </div>
                 </div>
 
-                <div id="umur-kehamilan" class="hidden mb-4">
-                    <label for="umur-kehamilan" class="block mb-2 text-sm font-medium text-gray-900">Umur Kehamilan</label>
-                    <input type="number" id="umur-kehamilan" name="umur-kehamilan" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur kehamilan">
+                <div id="umur-kehamilan" class="mb-4">
+                    <label for="umur-kehamilan" class="block mb-2 text-sm font-medium text-gray-900">Umur Kehamilan (dalam minggu)</label>
+                    <input type="number" id="umur-kehamilan" name="umur-kehamilan" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur kehamilan" required>
                 </div>
-
                 <div id="umur-bayi" class="mb-4">
-                    <label for="umur-bayi" class="block mb-2 text-sm font-medium text-gray-900">Umur Bayi</label>
-                    <input type="number" id="umur-bayi" name="umur-bayi" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur bayi">
+                    <label for="umur-bayi" class="block mb-2 text-sm font-medium text-gray-900">Umur Bayi (dalam bulan)</label>
+                    <input type="number" id="umur-bayi" name="umur-bayi" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Umur bayi" required>
                 </div>
 
                 <div id="jenis-kelamin" class="mb-4">
                     <label for="jenis-kelamin" class="block mb-2 text-sm font-medium text-gray-900">Jenis Kelamin Bayi</label>
                     <div class="relative">
-                        <select id="jenis-kelamin" name="jenis-kelamin" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <select name="jenis-kelamin" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             <option value="Laki-laki">Laki-laki</option>
                             <option value="Perempuan">Perempuan</option>
                         </select>
@@ -143,113 +142,80 @@
                 </div>
             </form>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400 mt-5">
-                Already have an account? <a href="{% url 'auth:login' %}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
+                Sudah punya akun? <a href="{% url 'auth:login' %}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Masuk disini</a>
             </p>
         </div>
     </div>
 </div>                
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-            const peran = document.getElementById('peran');
-            const umur = document.getElementById('umur');
-            const goldar = document.getElementById('golongan_darah');
-            const kondisi = document.getElementById('kondisi_ibu');
-            const umurKehamilan = document.getElementById('umur-kehamilan');
-            const umurBayi = document.getElementById('umur-bayi');
-            const jenisKelamin = document.getElementById('jenis-kelamin');
+        const peran = document.getElementById('peran');
+        const umur = document.getElementById('umur');
+        const goldar = document.getElementById('golongan-darah');
+        const kondisi = document.getElementById('kondisi-ibu');
+        const umurKehamilan = document.getElementById('umur-kehamilan');
+        const umurBayi = document.getElementById('umur-bayi');
+        const jenisKelamin = document.getElementById('jenis-kelamin');
 
-            // peran.addEventListener('change', function() {
-            //     const selectedValue = this.value;
+        function updateFieldsForPeran(selectedValue) {
+            console.log(goldar.value)
+            console.log(jenisKelamin.value)
+            console.log(kondisi.value)
+            console.log("Peran selected:", selectedValue);
+            if (selectedValue === 'Ibu') {
+                umur.classList.remove('hidden');
+                goldar.classList.remove('hidden');
+                kondisi.classList.remove('hidden');
+                umurKehamilan.classList.remove('hidden');
+                umurBayi.classList.add('hidden');
+                jenisKelamin.classList.add('hidden');
+            } else {
+                umur.classList.add('hidden');
+                goldar.classList.add('hidden');
+                kondisi.classList.add('hidden');
+                umurKehamilan.classList.add('hidden');
+                umurBayi.classList.remove('hidden');
+                jenisKelamin.classList.remove('hidden');
+            }
+        }
 
-            //     if (selectedValue === 'Ibu') {
-            //         umur.classList.remove('hidden');
-            //         goldar.classList.remove('hidden');
-            //         kondisi.classList.remove('hidden');
-            //         umurBayi.classList.add('hidden');
-            //         jenisKelamin.classList.add('hidden');
-            //         umurKehamilan.classList.remove('hidden');
+        function updateFieldsForKondisi(selectedValue) {
+            console.log("Kondisi selected:", selectedValue);
+            if (selectedValue === 'Hamil') {
+                umurKehamilan.classList.remove('hidden');
+                umurBayi.classList.add('hidden');
+                jenisKelamin.classList.add('hidden');
+            } else if (selectedValue === 'Menyusui') {
+                umurKehamilan.classList.add('hidden');
+                umurBayi.classList.remove('hidden');
+                jenisKelamin.classList.remove('hidden');
+            } else {
+                umurKehamilan.classList.add('hidden');
+                umurBayi.classList.add('hidden');
+                jenisKelamin.classList.add('hidden');
+            }
+        }
 
-            //     } else {
-            //         umur.classList.add('hidden');
-            //         goldar.classList.add('hidden');
-            //         kondisi.classList.add('hidden');
-            //         umurKehamilan.classList.add('hidden');
-            //         umurBayi.classList.remove('hidden');
-            //         jenisKelamin.classList.remove('hidden');
-            //     }
-            // });
-
-            // kondisi.addEventListener('change', function() {
-            //     const selectedValue = this.value;
-
-            //     if (selectedValue === 'hamil') {
-            //         umurKehamilan.classList.remove('hidden');
-            //         umurBayi.classList.add('hidden');
-            //         jenisKelamin.classList.add('hidden');
-            //     } else if (selectedValue === 'menyusui') {
-            //         umurBayi.classList.remove('hidden');
-            //         jenisKelamin.classList.remove('hidden');
-            //         umurKehamilan.classList.add('hidden');
-            //     } else {
-            //         umurKehamilan.classList.add('hidden');
-            //         umurBayi.classList.add('hidden');
-            //         jenisKelamin.classList.add('hidden');
-            //     }
-            // });
-            peran.addEventListener('change', function() {
+        peran.addEventListener('change', function() {
             const selectedValue = this.value;
-
-            umur.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
-            goldar.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
-            kondisi.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
-            umurKehamilan.style.display = selectedValue === 'Ibu' ? 'block' : 'none';
-            umurBayi.style.display = selectedValue === 'Ayah' ? 'block' : 'none';
-            jenisKelamin.style.display = selectedValue === 'Ayah' ? 'block' : 'none';
+            updateFieldsForPeran(selectedValue);
         });
 
         kondisi.addEventListener('change', function() {
             const selectedValue = this.value;
-
-            umurKehamilan.style.display = selectedValue === 'hamil' ? 'block' : 'none';
-            umurBayi.style.display = selectedValue === 'menyusui' ? 'block' : 'none';
-            jenisKelamin.style.display = selectedValue === 'menyusui' ? 'block' : 'none';
+            updateFieldsForKondisi(selectedValue);
         });
-    });
 
+        // Initialize the form based on default selected values
+        updateFieldsForPeran(peran.value);
+    });
     document.addEventListener('DOMContentLoaded', function() {
     const dropdownMenu = document.getElementById('dropdown-menu');
     const searchInput = document.getElementById('search-input');
     const dropdownItemsContainer = document.getElementById('dropdown-items-container');
 
     // Fetch JSON data and populate the dropdown
-    fetch('json/kota.json')
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 200) {
-                data.result.forEach(item => {
-                    const aTag = document.createElement('a');
-                    aTag.textContent = item.text;
-                    aTag.className = 'block px-4 py-2 text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer rounded-md';
-                    dropdownItemsContainer.appendChild(aTag);
-                });
-            }
-        })
-        .catch(error => console.error('Error fetching dropdown items:', error));
-
-    // Add event listener to filter items based on input
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase();
-        const items = dropdownItemsContainer.querySelectorAll('a');
-
-        items.forEach((item) => {
-            const text = item.textContent.toLowerCase();
-            if (text.includes(searchTerm)) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    });
+    
 });
 </script>
 {% endblock content %}                
