@@ -89,7 +89,6 @@ def login(request):
                     # Redirect to a success page.
                     request.session['username'] = username
                     request.session['user_id'] = user.id
-                    request.session['domisili'] = user.domisili
                     
                     return JsonResponse({
                     "status": True,
