@@ -49,7 +49,6 @@ def register(request):
             
             pengguna_baru.save()
             return render(request, "login.html")
-            return JsonResponse({"instance": "user Dibuat"}, status=200)
         
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
@@ -67,7 +66,7 @@ def register(request):
 
 
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -129,12 +128,22 @@ def get_session(request):
 
 
 @csrf_exempt
-def logout(request):
-	if request.user.is_authenticated or ['loggedIn']:
-		if request.user.is_authenticated:
-			auth_logout(request)
-		return JsonResponse({"status" : "logged out"}, status=200)
-	return JsonResponse({"status": "Not yet authenticated"}, status =403)
+def user_logout(request):
+    if request.method == "POST":
+        try:
+            logout(request)
+            request.session.flush()
+            return JsonResponse({
+                "status": True,
+                "message": "Successfully Logged Out!",
+            }, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({
+        "status": False,
+        "message": "Invalid request method."
+    }, status=405)
 
 
 # def get_user(request):

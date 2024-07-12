@@ -6,86 +6,261 @@
 {% block content %}
 <div class="flex items-center justify-center min-h-screen" style="background-color: #F4FEFF;">
     <div class="container mx-auto max-w-4xl mt-20">
-        <h1 class="text-center text-3xl font-bold mb-10">Halo, {{user.user.username}}!</h1>
+        <h1 class="text-center text-3xl font-bold mb-10">Halo, {{ user.user.username|title }}!</h1>
 
         <div class="grid grid-cols-2 gap-6">
             <div class="max-w-sm rounded overflow-hidden shadow-lg">
                 <div class="px-6 py-4">
-                  <div class="font-bold text-xl mb-2">{{user.nama}}</div>
-                  <div class="mb-2">
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="font-bold text-xl">{{ user.nama|title }}</div>
+                    </div>
+                    <div class="mb-2">
+                        <label>Peran</label>
+                        <input type="text" value="{{ user.peran }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        <label>Domisili</label>
+                        <input type="text" value="{{ user.domisili }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        <label>Agama</label>
+                        <input type="text" value="{{ user.agama }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
 
-                    <label>Peran</label>
-                    <input type="text" value={{user.peran}} readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
-                    
+                        {% if user.umur %}
+                            <label>Umur</label>
+                            <input type="text" value="{{ user.umur }} tahun" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% endif %}
 
-                    <label>Domisili</label>
-                    <input type="text" value={{user.domisili}} readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
-                    
-                    <label>Agama</label>
-                    <input type="text" value={{user.agama}} readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% if user.golongan_darah %}
+                            <label>Golongan Darah</label>
+                            <input type="text" value="{{ user.golongan_darah }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% endif %}
 
-                    {% if user.umur %}
-                        <label>Umur</label>
-                        <input type="text" value="{{ user.umur }} tahun" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% if user.kondisi_ibu %}
+                            <label>Kondisi Ibu</label>
+                            <input type="text" value="{{ user.kondisi_ibu }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% endif %}
+                        {% if user.umur_kehamilan %}
+                            <label>Umur Kehamilan</label>
+                            <input type="text" value="{{ user.umur_kehamilan }} minggu" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% endif %}
+                        {% if user.umur_bayi %}
+                            <label>Umur Bayi</label>
+                            <input type="text" value="{{ user.umur_bayi }} bulan" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% endif %}
+                        {% if user.jenis_kelamin %}
+                            <label>Jenis Kelamin Bayi</label>
+                            <input type="text" value="{{ user.jenis_kelamin }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
+                        {% endif %}
+                    </div>
+                    {% if all_selesai %}
+                    <div class="flex justify-center space-x-4 mt-10">
+                        <button data-modal-target="#butuh-modal" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full">Butuh ASI</button>
+                        <button data-modal-target="#donor-modal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Donor ASI</button>
+                    </div>
                     {% endif %}
-
-                    {% if user.golongan_darah %}
-                        <label>Golongan Darah</label>
-                        <input type="text" value="{{ user.golongan_darah }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
-                    {% endif %}
-
-                    {% if user.kondisi_ibu %}
-                        <label>Kondisi Ibu</label>
-                        <input type="text" value="{{ user.kondisi_ibu }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
-                    {% endif %}
-                    {% if user.umur_kehamilan %}
-                        <label>Umur Kehamilan</label>
-                        <input type="text" value="{{ user.umur_kehamilan }} minggu" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
-                    {% endif %}
-                    {% if user.umur_bayi %}
-                        <label>Umur Bayi</label>
-                        <input type="text" value="{{ user.umur_bayi }} minggu" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
-                    {% endif %}
-                    {% if user.jenis_kelamin %}
-                        <label>Jenis Kelamin Bayi</label>
-                        <input type="text" value="{{ user.jenis_kelamin }}" readonly class="border-none bg-gray-200 py-1 px-3 rounded-full text-sm text-gray-700 mb-2 block w-full">
-                    {% endif %}
-                  </div>
                 </div>
-              </div>
+            </div>
 
-              <div class="max-w-sm rounded overflow-hidden shadow-lg">
+            <div class="max-w-sm rounded overflow-hidden shadow-lg">
                 <div class="px-6 py-4">
-                  <div class="font-bold text-xl mb-2 text-center">Riwayat Donor dan Butuh ASI</div>
-                  <div class="grid grid-cols-1 gap-4">
-                    {% for donor in history %}
-                        <div class="relative bg-white p-6 rounded-lg shadow-md">
-                            {% if donor.tag == 'butuh' %}
-                                <h3 class="text-lg font-bold text-pink-500 mb-2">BUTUH ASI</h3>
-                            {% elif donor.tag == 'donor' %}
-                                <h3 class="text-lg font-bold text-blue-500 mb-2">DONOR ASI</h3>
-                            {% endif %}
-                            <p class="text-sm text-gray-600">{{ donor.timestamp }}</p>
-                        </div>
-                    {% endfor %}
+                    <div class="font-bold text-xl mb-2 text-center">Riwayat Donor dan Butuh ASI</div>
+                    <div class="grid grid-cols-1 gap-4">
+                        {% for donor in history %}
+                            <div class="relative bg-white p-6 rounded-lg shadow-md flex justify-between">
+                                <div>
+                                    {% if donor.tag == 'butuh' %}
+                                        <h3 class="text-lg font-bold text-pink-500">BUTUH ASI</h3>
+                                    {% elif donor.tag == 'donor' %}
+                                        <h3 class="text-lg font-bold text-blue-500">DONOR ASI</h3>
+                                    {% endif %}
+                                    <p class="text-sm text-gray-600">{{ donor.timestamp }}</p>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    {% if not donor.selesai %}
+                                        <form id="mark-as-done-{{ donor.pk }}" class="inline" method="POST" action="{% url 'user_profile:mark_as_done' donor.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded-full mt-2">Tandai sebagai selesai</button>
+                                        </form>
+                                    {% else %}
+                                        <p class="text-green-600 font-bold mt-2">Selesai</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="relative bg-white p-6 rounded-lg shadow-md">
+                                <p class="text-sm text-gray-600 text-center">Belum ada riwayat.</p>
+                            </div>
+                        {% endfor %}
+            
+                    </div>
                 </div>
-                
-                </div>
-              </div>
+            </div>
         </div>
     </div>
 </div>  
+
+<div id="butuh-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-4 rounded-lg shadow-lg max-w-sm w-full">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-center">Butuh ASI</h3>
+            <button class="text-gray-600" data-modal-close="#butuh-modal">&times;</button>
+        </div>
+        <p>Anda akan terdata sebagai orang yang BUTUH ASI, lanjutkan?</p>
+        
+        <div class="flex justify-center mt-4">
+            <button id="confirm-minta" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full mr-2">Ya, Lanjutkan</button>
+            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full ml-2" data-modal-close="#butuh-modal">Batal</button>
+        </div>
+    </div>
+</div>
+
+<div id="donor-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white p-4 rounded-lg shadow-lg max-w-3xl w-full">
+        <form id="donor-form" enctype="multipart/form-data">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Donor ASI</h3>
+                <button class="text-gray-600" data-modal-close="#donor-modal">&times;</button>
+            </div>
+            <div class="mb-4">
+                <label>Sebelum melakukan donor, ada beberapa syarat yang harus dipenuhi oleh pendonor ASI:</label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <input type="checkbox" id="agree-checkbox" class="form-checkbox h-5 w-5 text-blue-600" required>
+                    Merupakan seorang ibu dari bayi berusia kurang dari 6 bulan.
+                </label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <input type="checkbox" id="agree-checkbox" class="form-checkbox h-5 w-5 text-blue-600" required>
+                    Berkondisi sehat dan tidak ada kontradiksi menyusui.
+                </label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <input type="checkbox" id="agree-checkbox" class="form-checkbox h-5 w-5 text-blue-600" required>
+                    Tidak memiliki riwayat tranfusi darah atau transplantasi dalam 12 bulan terakhir.
+                </label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <input type="checkbox" id="agree-checkbox" class="form-checkbox h-5 w-5 text-blue-600" required>
+                    Tidak mengonsumsi obat-obatan dan produk yang bisa mempengaruhi kondisi bayi.
+                </label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    <input type="checkbox" id="agree-checkbox" class="form-checkbox h-5 w-5 text-blue-600" required>
+                    Wajib terbebas dari riwayat penyakit menular seperti hepatitis atau HIV (dibuktikan dengan berkas hasil tes)
+                </label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Upload berkas hasil tes HIV
+                    <input type="file" id="document-upload" name="document" accept=".pdf,.doc,.docx" required>
+                </label>
+            </div>
+            <div class="flex justify-center mt-4">
+                <button type="button" id="confirm-donor" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-2">Konfirmasi Donor ASI</button>
+                <button type="button" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-full ml-2" data-modal-close="#donor-modal">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#tag').change(function() {
+    $(document).ready(function () {
+        $('[data-modal-target]').on('click', function () {
+            var target = $(this).data('modal-target');
+            $(target).removeClass('hidden');
+        });
+        $('#confirm-donor').on('click', function (e) {
+            e.preventDefault();
+
+            // Check if all checkboxes are checked
+            if (!$('#agree-checkbox:checked').length === 6) {
+                alert('Harap centang semua syarat untuk melanjutkan.');
+                return;
+            }
+
+            var form = $('#donor-form')[0];
+            var formData = new FormData(form);
+
+            // Perform AJAX request
             $.ajax({
-                url: $('#filter-form').attr('action'),
-                data: $('#filter-form').serialize(),
-                success: function(data) {
-                    $('#donor-cards').html(data.html);
+                type: 'POST',
+                url: '{% url "user_profile:donor_asi" %}',
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                data: formData,
+                success: function (response) {
+                    console.log('Form submitted successfully');
+                    $('#donor-modal').addClass('hidden');
+                    clearFormFields('#donor-modal');
+                    location.reload(); // Reload the page after successful submission
+                },
+                error: function (error) {
+                    console.error('Error submitting form:', error);
+                    // Handle errors if necessary
+                }
+            });
+        });
+
+        // Function to clear form fields
+        function clearFormFields(modalId) {
+            $(modalId + ' input[type="checkbox"]').prop('checked', false); // Uncheck checkboxes
+            $(modalId + ' input[type="file"]').val(''); // Clear file input
+        }
+
+        // Close modal event
+        $('[data-modal-close]').on('click', function () {
+            var target = $(this).data('modal-close');
+            $(target).addClass('hidden');
+            clearFormFields(target); // Clear form fields when modal is closed
+        });
+
+        // Close modal when clicking outside of it
+        $(window).on('click', function (e) {
+            if ($(e.target).hasClass('bg-gray-600')) {
+                $('.fixed.inset-0.bg-gray-600').addClass('hidden');
+                var target = '.fixed.inset-0.bg-gray-600';
+                clearFormFields(target); // Clear form fields when modal is closed
+            }
+        });
+
+        // Handle click on "Ya, Lanjutkan" button
+        $('#confirm-minta').on('click', function () {
+            var targetModal = '#butuh-modal';
+
+            // Close the modal
+            $(targetModal).addClass('hidden');
+
+            $.ajax({
+                url: '{% url "user_profile:butuh_asi" %}',
+                type: 'POST',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                },
+                success: function (data) {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                }
+            });
+        });
+
+        $('[id^=mark-as-done-]').on('submit', function (e) {
+            e.preventDefault();
+
+            var form = $(this);
+            var url = form.attr('action');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: form.serialize(),
+                success: function (data) {
+                    console.log('Marked as done successfully');
+                    location.reload(); // Reload the page after successful mark as done
+                },
+                error: function (error) {
+                    console.error('Error marking as done:', error);
+                    // Handle errors if necessary
                 }
             });
         });
     });
 </script>
-{% endblock content %}                
+
+
+{% endblock content %}

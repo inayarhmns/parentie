@@ -6,59 +6,87 @@ from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
-from authentication.models import User
 from chat.models import Thread
 from authentication.models import RegisteredUser
+from django.db.models import Q
+import os
+from django.conf import settings
+
 # Create your views here.
 
 @login_required(login_url='/auth/login')
 def get_all_donors(request):
-    domisili = request.session.get('domisili')
-    tag_filter = request.GET.get('tag', None)  # Get the 'tag' parameter from GET request
-    
+    tag_filter = request.GET.get('tag')
+    domisili_filter = request.GET.get('domisili')
+    username = request.session.get("username")
+    registered_user = RegisteredUser.objects.get(user__username=username)
+
+    json_file_path = os.path.join(settings.BASE_DIR, 'static/json/kota.json')
+
+    with open(json_file_path, 'r', encoding='utf-8') as json_file:
+        data = json.load(json_file)
+        cities = [item['text'] for item in data['result']]
+
     if tag_filter:
-        donors = Donor.objects.filter(user__domisili="Bandung", tag=tag_filter)
+        if domisili_filter:
+            donors = Donor.objects.filter(user__domisili=domisili_filter, tag=tag_filter, selesai=False).exclude(user=registered_user)
+        else:
+            donors = Donor.objects.filter(tag=tag_filter, selesai=False).exclude(user=registered_user)
+    elif domisili_filter:
+        donors = Donor.objects.filter(user__domisili=domisili_filter, selesai=False).exclude(user=registered_user)
     else:
-        donors = Donor.objects.filter(user__domisili="Bandung")
-    
+        donors = Donor.objects.filter(selesai=False).exclude(user=registered_user)
+
+    latest = []
+    distinct = donors.values("user").distinct()
+    latest = []
+    for i in distinct:
+        userid = i['user']
+        user = RegisteredUser.objects.get(id=userid)
+        newest = donors.filter(user=user).order_by('timestamp').last()
+        latest.append(newest)
+
+
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        html = render_to_string('donor_cards.html', {'donors': donors})
+        html = render_to_string('donor_cards.html', {'donors': latest})
         return JsonResponse({'html': html})
-    
-    
-    return render(request, 'donor.html', {'donors': donors, 'tag_filter': tag_filter})
 
-
+    return render(request, 'donor.html', {'donors': latest, 'tag_filter': tag_filter, 'domisili_filter': domisili_filter, 'cities': cities})
 
 
 @csrf_exempt
 @login_required
 def start_chat(request):
-    print("asfg")
     if request.method == 'POST':
-        print("halo")
         data = json.loads(request.body)
         target_user_id = data.get('target_user_id')
+        
         try:
-            # print(RegisteredUser.objects.get(id=target_user_id).user)
-
-            # print(User.objects.all())
-            # target_user = User.objects.get(id=target_user_id)
             target_user = RegisteredUser.objects.get(id=target_user_id).user
-            print(target_user)
             current_user = request.user
 
-            # Ensure a thread exists only between the two users
-            thread, created = Thread.objects.get_or_create(
-                first_person=current_user,
-                second_person=target_user
-            )
+            # Attempt to find an existing thread between the users
+            thread = Thread.objects.filter(
+                Q(first_person=current_user, second_person=target_user) |
+                Q(first_person=target_user, second_person=current_user)
+            ).first()
+
+            # If no thread exists, create a new one
+            if not thread:
+                thread = Thread.objects.create(
+                    first_person=current_user,
+                    second_person=target_user
+                )
 
             return JsonResponse({
                 'success': True,
                 'thread_id': thread.id
             })
-        except User.DoesNotExist:
-            print("user does not exist")
+        
+        except RegisteredUser.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'User does not exist'}, status=404)
+        
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
