@@ -23,11 +23,16 @@ from forum.models import Discussion, Comment, PesertaEvent
 from django.contrib.auth.models import User
 
 def get_all_discussion(request):
-    discussion = Discussion.objects.all()
+
+    query = request.GET.get('q')
+    if query:
+        discussions = Discussion.objects.filter(title__icontains=query)
+    else:
+        discussions = Discussion.objects.all()
 
     data = []
     
-    for item in discussion:
+    for item in discussions:
         data.append({
             "pk" : item.pk,
             "fields" : {
@@ -112,122 +117,55 @@ def add_discussion(request):
             body = request.POST.get('body')
             new_discussion = Discussion.objects.create(user=registered_user, title=title, body=body)
 
-            return JsonResponse({
-                "pk" : new_discussion.pk,
-                "fields" : {
-                    "user" : { 
-                            "username" : new_discussion.user.user.username
-                            },
+        #     return JsonResponse({
+        #         "pk" : new_discussion.pk,
+        #         "fields" : {
+        #             "user" : { 
+        #                     "username" : new_discussion.user.user.username
+        #                     },
                 
-                    "date" : new_discussion.date,
-                    "title" : new_discussion.title,
-                    "body" : new_discussion.body,
+        #             "date" : new_discussion.date,
+        #             "title" : new_discussion.title,
+        #             "body" : new_discussion.body,
                     
-            }
-        })
+        #     }
+        # })
+            return redirect('forum:discussion')
 
         except Exception as e:
             return JsonResponse({"status": str(e)})
     return JsonResponse({"instance": "gagal Dibuat"}, status=400)
 
-
-
-# def get_post_json(request):
-
-#     data = []
-#     discussion = discussion.objects.all()
+def search_discussions(request):
+    query = request.GET.get('q')
+    if query:
+        discussions = Discussion.objects.filter(title__icontains=query)
+    else:
+        discussions = Discussion.objects.all()
     
-#     for item in discussion:
-#         data.append({
-#             "pk" : item.pk,
-#             "fields" : {
-#                 "user" : { 
-#                         "username" : item.user.username,
-#                         "name"     : item.user.name,
-#                         "role"     : item.user.role
-#                         },
-               
-#                 "date" : item.date,
-#                 "title" : item.title,
-#                 "body" : item.body,
-#                 "slug":item.slug,
-                
-#             }
-#         })
-#     return JsonResponse(data, safe=False)
+    context = {
+        'discussions': discussions,
+        'query': query
+    }
+    return render(request, 'search_results.html', context)
 
+@csrf_exempt
+def delete_discussion(request, id):
+    try:
+        data = Discussion.objects.filter(id=id)
+        data.delete()
+        return redirect('forum:discussion')
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500) 
 
-
-# @csrf_exempt
-# @login_required (login_url='../login/')
-# def add_comment(request,slug):
-#     posts = discussion.objects.get(slug=slug)
-#     if request.method == "POST":
-#         form = comment_form(request.POST)
-
-#         if form.is_valid():
-#             name_user = request.user
-#             post_user = posts
-#             date_user = datetime.date.today()
-#             comment_user = request.POST.get('body')
-#             new_comment = Comment(discussion=post_user, name= name_user, body=comment_user, date_added = date_user)
-#             Comment.objects.create(discussion=post_user, name= name_user, body=comment_user, date_added = date_user)
-#             return JsonResponse({
-#             "pk" : new_comment.pk,
-#             "fields" : {
-#                 "name" : { 
-#                         "username" : new_comment.name.username,
-#                         "name"     : new_comment.name.name,
-#                         "role"     : new_comment.name.role
-#                         },
-               
-#                 "discussion" : new_comment.discussion,
-#                 "date_added" : new_comment.date_added,
-#                 "body" : new_comment.body,                
-#             }
-#         })
-
-
-
-# @csrf_exempt
-# @login_required(login_url='../login/')
-# def detail(request,slug):
-#     # posts = discussion.objects.get(slug=slug)
-    
-#     posts = discussion.objects.get(slug=slug)
-
-
-#     if request.method == "POST":
-#         form = comment_form(request.POST)
-
-#         if form.is_valid():
-#             name_user = request.user
-#             post_user = posts
-#             date_user = datetime.date.today()
-#             comment_user = request.POST.get('body')
-#             new_comment = Comment(discussion=post_user, name= name_user, body=comment_user, date_added = date_user)
-#             return JsonResponse({
-#             "pk" : new_comment.pk,
-#             "fields" : {
-#                 "name" : { 
-#                         "username" : new_comment.name.username,
-#                         "name"     : new_comment.name.name,
-#                         "role"     : new_comment.name.role
-#                         },
-               
-#                 "discussion" : new_comment.discussion,
-#                 "date_added" : new_comment.date_added,
-#                 "body" : new_comment.body,                
-#             }
-#         })
-           
-
-#         return redirect('discussion:detail',slug=posts.slug)
-#     context={
-#         'posts':posts,
-#         'form' :comment_form,
-#     }
-#     return render(request,'detail_post.html',context)
+@csrf_exempt
+def delete_comment(request, id):
+    try:
+        data = Comment.objects.filter(id=id)
+        data.delete()
+        return redirect('forum:get_discussion_by_id', id=id)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500) 
 
 
 def event(request, id):
