@@ -26,7 +26,7 @@ from forum_v2.models import Discussion, Comment, PesertaEvent
 from django.contrib.auth.models import User
 
 def get_all_discussion(request):
-
+    user = request.user
     query = request.GET.get('q')
     query_event = request.GET.get('q_event')
     data = []
@@ -38,7 +38,7 @@ def get_all_discussion(request):
 
     if query:
         discussions = Discussion.objects.filter(title__icontains=query)
-
+        print(discussions)
         for item in discussions:
             data.append({
                 "pk" : item.pk,
@@ -62,7 +62,7 @@ def get_all_discussion(request):
                     "judul": item.judul,
                     "penyelenggara": item.penyelenggara,
                     "detail": item.detail,
-                    "tanggal": item.tanggal_waktu_mulai,
+                    # "tanggal": item.tanggal_waktu_mulai,
                     "lokasi": item.lokasi
             }
         })
@@ -92,7 +92,7 @@ def get_all_discussion(request):
                     "judul": item.judul,
                     "penyelenggara": item.penyelenggara,
                     "detail": item.detail,
-                    "tanggal": item.tanggal_waktu_mulai,
+                    # "tanggal": item.tanggal_waktu_mulai,
                     "lokasi": item.lokasi
             }
         })
@@ -101,7 +101,8 @@ def get_all_discussion(request):
 
     context={
         'discussion_item':data,
-        'event_item':data_event
+        'event_item':data_event,
+        'user' : user
     }
     # return JsonResponse(data, safe=False)
     return render(request,'discussion.html',context)
@@ -120,7 +121,7 @@ def get_detail_discussion(request, id):
         }
 
         comments = [
-            {   "id" : comment.pk,
+            {   "id" : comment.id,
                 "discussion_id":comment.post.id,
                 "user": comment.user_commenting.user.username,
                 "body": comment.body,
@@ -129,15 +130,24 @@ def get_detail_discussion(request, id):
             for comment in comment_by_discussion
         ]
 
-        context = {
-            'discussion': discussion,
-            'comments': comments
-        }
+        if request.session.get('username'):
+            context = {
+                'discussion': discussion,
+                'comments': comments,
+                'registered_username':request.session.get('username')
+            }
+        else:
+            context = {
+                'discussion': discussion,
+                'comments': comments,
+                'registered_username':"None"
+            }
         # return JsonResponse(context)
         return render(request,'discussion_detail.html',context)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
-
+    
+@login_required(login_url="/auth/login")
 @csrf_exempt
 def add_comment(request, id):
     if request.method == "POST":
@@ -155,13 +165,13 @@ def add_comment(request, id):
             #         "date_added": comment.date_added.strftime('%B %d, %Y')
             #     }
             # })
-            return redirect('forum:get_discussion_by_id', id=id)
+            return redirect('get_discussion_by_id_v2', id=id)
         except Exception as e:
             return JsonResponse({"status": str(e)})
     return JsonResponse({"status": "error" }, status=400)
 
 
-
+@login_required
 @csrf_exempt
 def add_discussion(request):
     if request.method == "POST":
@@ -185,7 +195,7 @@ def add_discussion(request):
                     
         #     }
         # })
-            return redirect('forum:discussion')
+            return redirect('discussion_v2')
 
         except Exception as e:
             return JsonResponse({"status": str(e)})
@@ -209,7 +219,7 @@ def delete_discussion(request, id):
     try:
         data = Discussion.objects.filter(id=id)
         data.delete()
-        return redirect('forum:discussion')
+        return redirect('discussion_v2')
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500) 
 
@@ -217,8 +227,19 @@ def delete_discussion(request, id):
 def delete_comment(request, id):
     try:
         data = Comment.objects.filter(id=id)
+
+        comments_data = []
+        for comment in data:
+            comments_data.append({
+                'id': comment.id,
+                'body': comment.body,
+                'date_added': comment.date_added.strftime('%Y-%m-%d %H:%M:%S'),
+                'discussion_id': comment.post.id,
+                'user_commenting': comment.user_commenting.user.username  # Mengambil username dari user
+            })        
         data.delete()
-        return redirect('forum:get_discussion_by_id', id=id)
+        print(comments_data[0]["id"])
+        return redirect('get_discussion_by_id_v2', id=comments_data[0]['discussion_id'])
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500) 
 
@@ -277,16 +298,16 @@ def create_detail_event(request, id):
             detail = request.POST.get('detail')
             penyelenggara = request.POST.get('penyelenggara')
             lokasi = request.POST.get('lokasi')
-            tanggal_waktu_mulai = request.POST.get('tanggal_waktu_mulai')
-            tanggal_waktu_selesai = request.POST.get('tanggal_waktu_selesai')
+            # tanggal_waktu_mulai = request.POST.get('tanggal_waktu_mulai')
+            # tanggal_waktu_selesai = request.POST.get('tanggal_waktu_selesai')
             waktu_mulai = request.POST.get('waktu_mulai')
             waktu_selesai = request.POST.get('waktu_selesai')
             link_event = request.POST.get('link_event')
             nama_contact_person = request.POST.get('nama_contact_person')
             nomor_contact_person = request.POST.get('nomor_contact_person')
 
-            mulai = datetime.datetime.strptime(tanggal_waktu_mulai + ' ' + waktu_mulai, "%m/%d/%Y %H:%M")
-            selesai = datetime.datetime.strptime(tanggal_waktu_selesai + ' ' + waktu_selesai, "%m/%d/%Y %H:%M")
+            # mulai = datetime.datetime.strptime(tanggal_waktu_mulai + ' ' + waktu_mulai, "%m/%d/%Y %H:%M")
+            # selesai = datetime.datetime.strptime(tanggal_waktu_selesai + ' ' + waktu_selesai, "%m/%d/%Y %H:%M")
             print("mulai & selesai")
             print(mulai)
             print(selesai)
@@ -409,6 +430,6 @@ def delete_detail_event(request, id):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500) 
 
-    # return redirect('forum:event/4')
+    # return redirect('forum_v2:event/4')
 
     

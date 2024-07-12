@@ -7,7 +7,7 @@ urlpatterns = [
     # path('', tracker, name='index'),
     path('register', register, name='register'),
     # path('add_footprint', add_footprint, name='add_footprint'),
-    path('login', login, name='login'),
+    path('login', login, name='auth_login'),
 
     
 ]

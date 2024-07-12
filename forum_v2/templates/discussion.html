@@ -3,6 +3,39 @@
 {% endblock meta %} {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+  /* Hide the default radio button */
+.custom-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ff69b4; /* Border color */
+  border-radius: 50%;
+  position: relative;
+}
+
+/* Style the checked state */
+.custom-radio:checked {
+  background-color: #ff69b4; /* Background color */
+}
+
+/* Create the dot for the checked state */
+.custom-radio:checked::before {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: white; /* Dot color */
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+</style>
 <div class="min-h-screen" style="background-color: #f4feff">
   <div>
     <img
@@ -17,29 +50,29 @@
     </div>
   </div>
 
-  <div class="flex space-x-4">
-    <div class="flex items-center">
+  <div class="z-50 relative flex justify-center space-x-2">
+    <div class="flex bg-white w-36 rounded-lg shadow-lg hover:shadow-xl items-center p-5">
       <input
         type="radio"
         id="discussion"
         name="display_choice"
         value="discussion"
-        class="text-primary-600 focus:ring-primary-500 dark:focus:ring-blue-500"
+        class="custom-radio"
         {% if not q_event %}checked{% endif %}      />
-      <label for="discussion" class="ml-2 text-sm text-gray-900 dark:text-white"
+      <label for="discussion" class="ml-2 text-sm text-pr-black "
         >Discussion</label
       >
     </div>
-    <div class="flex items-center">
+    <div class="flex bg-white w-36 rounded-lg shadow-lg hover:shadow-xl items-center p-5">
       <input
         type="radio"
         id="event"
         name="display_choice"
         value="event"
-        class="text-primary-600 focus:ring-primary-500 dark:focus:ring-blue-500"
+        class="custom-radio"
         {% if q_event %}checked{% endif %}
       />
-      <label for="event" class="ml-2 text-sm text-gray-900 dark:text-white"
+      <label for="event" class="ml-2 text-sm text-pr-black"
         >Event</label
       >
     </div>
@@ -47,15 +80,15 @@
 
   <div id="content-container" class="mt-4">
     <div id="discussion-content" {% if q_event %}class="hidden"{% endif %}>      
-        <button
+        <!-- <button
         data-modal-target="static-modal"
         data-modal-toggle="static-modal"
         class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-center"
         type="button"
       >
         Add Discussion
-      </button>
-      <form id="discussion-form" class="mb-4">
+      </button> -->
+      <!-- <form id="discussion-form" class="mb-4 mt-16 w-3/5 max-w-sm lg:max-w-full">
         <input
           type="text"
           name="q"
@@ -64,7 +97,7 @@
           class="border p-2 rounded w-full"
         />
         <button type="submit" class="hidden">Search</button>
-      </form>
+      </form> -->
       <div
         id="static-modal"
         data-modal-backdrop="static"
@@ -110,7 +143,7 @@
             <div class="p-4 md:p-5 space-y-4">
               <form
                 id="add-discussion-form"
-                action="{% url 'forum_v2:add_discussion_v2'%}"
+                action="{% url 'add_discussion_v2'%}"
                 method="POST"
               >
                 <div class="pb-4">
@@ -163,9 +196,29 @@
         </div>
       </div>
       <div class="flex flex-col items-center space-y-4 pb-4 relative z-20">
+        {% if user.is_authenticated %}
+        <button
+        data-modal-target="static-modal"
+        data-modal-toggle="static-modal"
+        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-center"
+        type="button"
+      >
+        Add Discussion
+      </button>
+      {% endif %}
+        <form id="discussion-form" class="mb-4 mt-16 w-3/5 max-w-sm lg:max-w-full shadow-md">
+          <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Search discussions..."
+            class="border p-2 rounded w-full"
+          />
+          <button type="submit" class="hidden">Search</button>
+        </form>
         {% for item in discussion_item %}
         <a
-          href="{% url 'forum_v2:get_discussion_by_id_v2' item.pk %}"
+          href="{% url 'get_discussion_by_id_v2' item.pk %}"
           class="w-3/5 max-w-sm lg:max-w-full lg:flex rounded-lg shadow-lg no-underline"
         >
           <div
@@ -193,15 +246,17 @@
       </div>
     </div>
 
-<div id="event-content" {% if not q_event %}class="hidden"{% endif %}>      <button
+<div id="event-content" {% if not q_event %}class="hidden"{% endif %}>      
+  <!-- <button
         data-modal-target="event-modal"
         data-modal-toggle="event-modal"
         class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-center"
         type="button"
       >
         Add Event
-      </button>
-      <form id="event-form" class="mb-4">
+      </button> -->
+      <!-- <div class="ml-36 flex items-center justify-between bg-blue-500">
+      <form id="event-form" class="mb-4 mt-16 w-3/5 max-w-sm lg:max-w-full ">
         <input
           type="text"
           name="q_event"
@@ -211,6 +266,7 @@
         />
         <button type="submit" class="hidden">Search</button>
       </form>
+      </div> -->
       <div
         id="event-modal"
         data-modal-backdrop="static"
@@ -256,7 +312,7 @@
             <div class="p-4 md:p-5 space-y-4">
               <form
                 id="add-discussion-form"
-                action="{% url 'forum_v2:add_discussion_v2'%}"
+                action="{% url 'add_discussion_v2'%}"
                 method="POST"
               >
                 <div class="pb-4">
@@ -309,10 +365,30 @@
         </div>
       </div>
       
-      <div class="flex flex-col items-center space-y-4 pb-4 relative z-20">
+      <div class="flex flex-col items-center space-y-4 pb-4 relative z-20 shadow-lg">
+        {% if user.is_authenticated %}
+        <button
+        data-modal-target="event-modal"
+        data-modal-toggle="event-modal"
+        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 text-center"
+        type="button"
+      >
+        Add Event
+      </button>
+      {% endif %}
+        <form id="event-form" class="mb-4 mt-16 w-3/5 max-w-sm lg:max-w-full shadow-md">
+          <input
+            type="text"
+            name="q_event"
+            value="{{ query }}"
+            placeholder="Search events..."
+            class="border p-2 rounded w-full"
+          />
+          <button type="submit" class="hidden">Search</button>
+        </form>
         {% for item in event_item %}
         <a
-          href="{% url 'forum_v2:event_v2' item.id %}"
+          href="{% url 'event_v2' item.id %}"
           class="w-3/5 max-w-sm lg:max-w-full lg:flex rounded-lg shadow-lg no-underline"
         >
           <div
