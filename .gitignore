@@ -16,6 +16,6 @@ __pycache__/
 env.template
 .DS_Store
 media/
-static/
+# static/
 venv/
 
