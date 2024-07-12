@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Discussion</title>
+{% endblock meta %}
+{% block content %}
+<div class="max-w-2xl mx-auto px-4">
+ 
+    <div class="mb-6 mt-6">
+        <div class="max-w-sm w-full lg:max-w-full lg:flex rounded-lg shadow-lg overflow-hidden">
+            <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal w-full">
+                <div class="flex items-center justify-between text-gray-600 text-sm mb-4">
+                    <p class="font-bold">{{discussion.user}}</p>
+                    <p>{{discussion.date}}</p>
+                </div>
+                <div class="mb-4">
+                    <div class="text-gray-900 font-bold text-xl mb-2">{{discussion.title}}</div>
+                    <p class="text-gray-700 text-base">{{discussion.body}}</p>
+                </div>
+                <!-- Comment Section -->
+                <form class="mb-6">
+                    <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200">
+                        <label for="comment" class="sr-only">Your comment</label>
+                        <textarea id="comment" rows="3"
+                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none"
+                            placeholder="Write a comment..." required></textarea>
+                    </div>
+                    <button type="submit"
+                        class="inline-flex items-center py-2 px-4 text-xs font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                        Post comment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="border-r border-b border-l border-gray-400 lg:border-0 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal w-full">
+        <div class="flex items-center justify-between text-gray-600 text-sm mb-4">
+            <p class="font-bold">Jane Doe</p>
+            <p>Sep 22</p>
+        </div>
+        <div class="mb-4">
+            <p class="text-gray-700 text-base">{{ "Discover effective ways to manage morning sickness and make your pregnancy journey smoother."|truncatewords:25 }}</p>
+        </div>
+    </div>
+    <div class="mb-6"></div>
+    <div class="border-r border-b border-l border-gray-400 lg:border-0 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal w-full">
+        <div class="flex items-center justify-between text-gray-600 text-sm mb-4">
+            <p class="font-bold">Jane Doe</p>
+            <p>Sep 22</p>
+        </div>
+        <div class="mb-4">
+            <p class="text-gray-700 text-base">{{ "Discover effective ways to manage morning sickness and make your pregnancy journey smoother."|truncatewords:25 }}</p>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock content %}

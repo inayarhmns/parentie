@@ -10,7 +10,8 @@ urlpatterns = [
     path('event-update/<int:id>/', update_detail_event, name='update_detail_event'),
     path('event-create/<int:id>/', create_detail_event, name='create_detail_event'),
     path('event/<int:id>/', event, name='event'),
-    path('add_discussion', add_discussion, name='add_discussion'),
-    path('get_all_discussion', get_all_discussion, name='get_all_discussion'),
+    # path('add_discussion', add_discussion, name='add_discussion'),
+    path('discussion', get_all_discussion, name='discussion'),
+    path('discussion/<str:id>', get_detail_discussion, name='get_discussion_by_id'),
     
 ]
